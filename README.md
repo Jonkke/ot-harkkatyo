@@ -2,7 +2,7 @@
 
 Contained within this repository are the **course project** (once I get around to it, that is...) and **exercise submissions** for a university course on software development techniques, _Ohjelmistotekniikka_. 
 
-Some of the contained material may be in finnish.
+Some of the contained material may be in finnish, but I will attempt to write most documentation in english.
 
 
 ## Exercise submissions

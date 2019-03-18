@@ -7,5 +7,5 @@ Some of the contained material may be in finnish.
 
 ## Exercise submissions
 ### Week 1
-[gitlog.txt](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko1/gitlog.txt)
+[gitlog.txt](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko1/gitlog.txt)  
 [komentorivi.txt](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko1/komentorivi.txt)

@@ -1,0 +1,113 @@
+commit 307ee9040a6ed35e184f128611111723b86fbd28
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 03:23:23 2019 +0200
+
+    poista file1, muuta file2
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit cc97698a025f6ef396afc7532ac8c09c3bcbbfe2
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 03:14:25 2019 +0200
+
+    luo kolme filua
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 577c8cb89acb1d9f09812244a4f51ffbb88bafc2
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 03:04:55 2019 +0200
+
+    muunna tiedostoa eka.txt ja tiedostoa kolmas.txt
+
+ eka.txt    | 8 ++++----
+ kolmas.txt | 2 ++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+commit 2316f4c77938c0e7af3a4bb2e29fc9de47ebfd03
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 03:01:52 2019 +0200
+
+    muuta tiedoston tiedosto.txt nimi
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3d3ea77f9a0dc3cffa65d8d0234b4f8604ff19b5
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 03:01:02 2019 +0200
+
+    poista toinen.txt
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit f7d723b5fe10b7d219e7dca6a1c66d6d33c75ec7
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:58:55 2019 +0200
+
+    posta ja lisaa tekstia tiedosto.txt:iin
+
+ tiedosto.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 117c0942b94b030604e967bba63742d4640462da
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:56:24 2019 +0200
+
+    lisaa tekstia tiedosto.txt:iin
+
+ tiedosto.txt | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+commit 19fd995bbb34de430a7a2cbb2f3a4459bdedcc11
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:45:57 2019 +0200
+
+    luo kansio stuff ja stuffFile
+
+ stuff/stuffFile.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit d407718a77148b08492ecb0035ddde1ea5563b58
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:45:07 2019 +0200
+
+    muuta toista ja kolmatta
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit aa3438fdd6180ca0d18d751fbf2205404228bf85
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:43:51 2019 +0200
+
+    luotiin kolmas
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 5c769adf3b206f6046ca6d7464186e4892055017
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:36:03 2019 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 0aa21ea2e532d77f6cc127e45b7b9ddd6e54f38e
+Author: Jonkke <46763810+Jonkke@users.noreply.github.com>
+Date:   Mon Mar 18 02:33:13 2019 +0200
+
+    tiedosto.txt luotu!
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)

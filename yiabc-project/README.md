@@ -6,5 +6,5 @@ This project uses Java 8 and Maven 3.5.2.
 
 ## Documentation
 
-[Definition]()
-[Hours used]()
+[Definition](https://github.com/Jonkke/ot-harkkatyo/blob/master/yiabc-project/documentation/definition.md)  
+[Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/yiabc-project/documentation/usedhours.md)

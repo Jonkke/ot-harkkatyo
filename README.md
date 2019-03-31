@@ -13,3 +13,9 @@ Some of the contained material may be in finnish, but I will try to write most d
 ### Week 2
 [testikattavuus_kaikki.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko2/testikattavuus_kaikki.png)  
 [testikattavuus_kassapaate.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko2/testikattavuus_kassapaate.png)
+
+### Week 3
+[Tehtava1.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava1.png)  
+[Tehtava2.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava2.png)  
+[Tehtava3.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava3.png)  
+[Tehtava4.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava4.png)  

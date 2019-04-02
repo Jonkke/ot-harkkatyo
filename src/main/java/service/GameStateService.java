@@ -46,7 +46,9 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     public GameStateService(int width, int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
-        this.ball = new Ball(200, 200, 25);
+        this.ball = new Ball(200, 200, 10);
+        this.ball.setVelocityX(3);
+        this.ball.setVelocityY(5);
         this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 20);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);

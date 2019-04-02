@@ -1,11 +1,12 @@
-package OMBC;
+package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 import service.SceneDirectorService;
 
 /**
- *
+ * The main class used to launch the game.
+ * 
  * @author Jonkke
  */
 public class App extends Application {

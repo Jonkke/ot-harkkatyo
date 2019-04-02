@@ -26,8 +26,8 @@ public abstract class GameObject {
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
-        this.velocityX = 1;
-        this.velocityY = 1;
+        this.velocityX = 0;
+        this.velocityY = 0;
     }
 
     abstract public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates);

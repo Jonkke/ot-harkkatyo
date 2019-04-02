@@ -7,7 +7,6 @@ package service;
 
 import scene.GameScene;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import scene.BaseScene;
 import scene.MenuScene;

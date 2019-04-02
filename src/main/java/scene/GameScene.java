@@ -5,7 +5,7 @@
  */
 package scene;
 
-import OMBC.App;
+import main.App;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;

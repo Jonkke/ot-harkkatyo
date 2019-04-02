@@ -1,21 +1,12 @@
-# ot-harkkatyö
+# OMBC - One More Breakout Clone
 
-Contained within this repository are the [**course project**](https://github.com/Jonkke/ot-harkkatyo/tree/master/ombc-project) and [**exercise submissions**](https://github.com/Jonkke/ot-harkkatyo/tree/master/laskarit) for a university course on software development techniques, _Ohjelmistotekniikka_. 
+A small game project built as part of a university course. Includes some non-related exercises for the first three weeks, that can be found in the folder *laskarit*.
 
-Some of the contained material may be in finnish, but I will try to write most documentation in english.
+A ball-and-paddle -style game also featuring some bricks to break. In other words, another clone of the classic Breakout game, originally released by Atari in 1976. In this simple 2D game, the player controls a paddle that is used to hit a ball moving in the game area, in an attempt to hit an array of bricks at the top to gain points. The goal is to completely clear the array of bricks while trying to keep the count of lost balls (=balls the player could not bounce back) as small possible.
 
+This project uses Java 8 and Maven 3.5.2.
 
-## Exercise submissions
-### Week 1
-[gitlog.txt](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko1/gitlog.txt)  
-[komentorivi.txt](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko1/komentorivi.txt)
+## Documentation
 
-### Week 2
-[testikattavuus_kaikki.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko2/testikattavuus_kaikki.png)  
-[testikattavuus_kassapaate.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko2/testikattavuus_kassapaate.png)
-
-### Week 3
-[Tehtava1.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava1.png)  
-[Tehtava2.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava2.png)  
-[Tehtava3.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava3.png)  
-[Tehtava4.png](https://github.com/Jonkke/ot-harkkatyo/blob/master/laskarit/viikko3/Tehtava4.png)  
+[Definition](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/definition.md)  
+[Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/usedhours.md)

@@ -8,5 +8,5 @@ This project uses Java 8 and Maven 3.5.2.
 
 ## Documentation
 
-[Definition](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/definition.md)  
-[Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/usedhours.md)
+[Definition](https://github.com/Jonkke/ot-harkkatyo/blob/master/documentation/definition.md)  
+[Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/documentation/usedhours.md)

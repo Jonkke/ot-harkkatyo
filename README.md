@@ -10,3 +10,23 @@ This project uses Java 8 and Maven 3.5.2.
 
 [Definition](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/definition.md)  
 [Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/ombc-project/documentation/usedhours.md)
+
+## Running & Testing
+
+### Testing
+
+Tests can be run with
+```
+mvn test
+```
+And a Jacoco code coverage report (found in */target/site/jacoco*) can be generated with
+```
+mvn test jacoco:report
+```
+
+### Running
+
+You can launch the game by running the command
+```
+mvn compile exec:java -Dexec.mainClass=main.App
+```

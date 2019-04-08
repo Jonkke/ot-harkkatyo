@@ -22,6 +22,7 @@ public abstract class GameObject {
     protected int y;
     protected int velocityX;
     protected int velocityY;
+    protected CollisionObject colObj;
 
     public GameObject(int x, int y) {
         this.x = x;

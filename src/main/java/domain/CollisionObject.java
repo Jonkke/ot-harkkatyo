@@ -13,32 +13,46 @@ package domain;
  *
  * @author Jonkke
  */
-public abstract class CollisionObject {
+public class CollisionObject {
 
+    private GameObject hostObj;
     private String type;
-    private int x;
-    private int y;
     private int width;
     private int height;
     private int radius;
 
-    public CollisionObject(int width, int height) {
+    public CollisionObject(int width, int height, GameObject hostObj) {
+        this.hostObj = hostObj;
         this.type = "rectangle";
         this.width = width;
         this.height = height;
     }
 
-    public CollisionObject(int radius) {
+    public CollisionObject(int radius, GameObject hostObj) {
+        this.hostObj = hostObj;
         this.type = "circle";
         this.radius = radius;
     }
 
     public boolean checkCollision(CollisionObject cobj) {
         if (this.type == "circle" && cobj.type == "circle") {
-            return Math.sqrt(Math.pow(cobj.x - this.x, 2) + Math.pow(cobj.y - this.y, 2)) < this.radius;
+            return Math.sqrt(Math.pow(cobj.getHostX() - this.getHostX(), 2) + Math.pow(cobj.getHostY() - this.getHostY(), 2)) < this.radius + cobj.radius;
         }
-        // the rest...
+        if (this.type == "circle" && cobj.type == "rectangle") {
+            return this.getHostX() + this.radius >= cobj.getHostX() - cobj.width / 2
+                    && this.getHostX() - this.radius <= cobj.getHostX() + cobj.width / 2
+                    && this.getHostY() + this.radius >= cobj.getHostY() - cobj.height / 2
+                    && this.getHostY() - this.radius <= cobj.getHostY() + cobj.height / 2;
+        }
         return false;
+    }
+    
+    public int getHostX() {
+        return this.hostObj.x;
+    }
+    
+    public int getHostY() {
+        return this.hostObj.y;
     }
 
 }

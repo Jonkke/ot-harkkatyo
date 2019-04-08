@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -46,9 +45,9 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     public GameStateService(int width, int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
-        this.ball = new Ball(200, 200, 10);
-        this.ball.setVelocityX(3);
-        this.ball.setVelocityY(5);
+        this.ball = new Ball(200, 200, 15);
+        this.ball.setVelocityX(1);
+        this.ball.setVelocityY(3);
         this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 20);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);

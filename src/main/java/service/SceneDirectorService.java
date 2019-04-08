@@ -5,6 +5,7 @@
  */
 package service;
 
+import javafx.scene.Cursor;
 import scene.GameScene;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -40,6 +41,7 @@ public class SceneDirectorService {
     
     public void setGameScene() {
         this.scene.setRoot(this.gameScene.getRoot());
+        this.scene.setCursor(Cursor.NONE);
         this.activeScene = gameScene;
         this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);
         this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);

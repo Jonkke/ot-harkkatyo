@@ -24,6 +24,7 @@ public class Paddle extends GameObject {
         this.width = 50;
         this.height = 10;
         this.moveSpeed = 15;
+        this.colObj = new CollisionObject(width, height, this);
     }
 
     public Paddle(int x, int y, int width, int height) {
@@ -31,6 +32,7 @@ public class Paddle extends GameObject {
         this.width = width;
         this.height = height;
         this.moveSpeed = 15;
+        this.colObj = new CollisionObject(width, height, this);
     }
 
     @Override

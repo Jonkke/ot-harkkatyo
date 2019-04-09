@@ -19,7 +19,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws InterruptedException {
-        this.sceneDirector.setGameScene();
+        this.sceneDirector.setMenuScene();
+        stage.setResizable(false);
         stage.setTitle("OMBC - One More Breakout Clone");
         stage.setScene(this.sceneDirector.getScene());
         stage.show();

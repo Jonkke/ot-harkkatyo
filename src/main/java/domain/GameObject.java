@@ -23,6 +23,8 @@ public abstract class GameObject {
     protected int velocityX;
     protected int velocityY;
     protected CollisionObject colObj;
+    protected GameObject wasHitBy;
+    protected boolean destroyed; // If true, the object will be deleted during the update cycle
 
     public GameObject(int x, int y) {
         this.x = x;
@@ -31,8 +33,26 @@ public abstract class GameObject {
         this.velocityY = 0;
     }
 
+    /**
+     * Each inheriting game object class must implement it's own update method.
+     * This method is called once for every active game object during a single
+     * update cycle.
+     *
+     * @param xBounds The vertical upper bounds of the game area
+     * @param yBounds The horizontal upper bounds of the game area
+     * @param gameObjectList List of other game objects (for collision checking
+     * and other interaction)
+     * @param keyStates An array of currently pressed keys
+     * @param mouseStates An array of currently active mouse states
+     */
     abstract public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates);
 
+    /**
+     * The draw method is used to draw this game object on the GraphicsContext
+     * supplied. Each inheriting class must implement it's own draw method.
+     *
+     * @param gc The GraphicsContext to draw on.
+     */
     abstract public void draw(GraphicsContext gc);
 
     public void setX(int x) {
@@ -66,13 +86,25 @@ public abstract class GameObject {
     public int getY() {
         return this.y;
     }
-    
+
     public void accelerateX(int accX) {
         this.velocityX += accX;
     }
-    
+
     public void accelerateY(int accY) {
         this.velocityY += accY;
+    }
+    
+    public void markForDestruction() {
+        this.destroyed = true;
+    }
+    
+    public boolean markedForDestruction() {
+        return this.destroyed;
+    }
+    
+    public void setWasHitBy(GameObject gameObj) {
+        this.wasHitBy = gameObj;
     }
 
 }

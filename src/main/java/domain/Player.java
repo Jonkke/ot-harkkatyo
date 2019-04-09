@@ -6,16 +6,17 @@
 package domain;
 
 /**
- * 
+ *
  * @author Jonkke
  */
 public class Player {
-   private String name;
-   private int bestScore;
-   
-   public Player(String name, int bestScore) {
-       this.name = name;
-       this.bestScore = bestScore;
-   }
-   
+
+    private String name;
+    private int bestScore;
+
+    public Player(String name, int bestScore) {
+        this.name = name;
+        this.bestScore = bestScore;
+    }
+
 }

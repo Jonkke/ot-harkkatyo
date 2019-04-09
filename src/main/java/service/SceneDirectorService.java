@@ -5,10 +5,12 @@
  */
 package service;
 
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import scene.GameScene;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import scene.BaseScene;
 import scene.MenuScene;
 
@@ -20,9 +22,9 @@ import scene.MenuScene;
  * @author Jonkke
  */
 public class SceneDirectorService {
-    
-    private int canvasWidth;
-    private int canvasHeight;
+
+    private int sceneWidth;
+    private int sceneHeight;
 
     private GameStateService gss;
     private Scene scene;
@@ -31,26 +33,34 @@ public class SceneDirectorService {
     private MenuScene menuScene;
 
     public SceneDirectorService() {
-        this.canvasWidth = 1024;
-        this.canvasHeight = 768;
-        this.gss = new GameStateService(canvasWidth, canvasHeight);
+        this.sceneWidth = 1024;
+        this.sceneHeight = 768;
+        this.gss = new GameStateService(sceneWidth, sceneHeight);
         this.gameScene = new GameScene(this, this.gss);
-        this.menuScene = new MenuScene(this);
+        this.menuScene = new MenuScene(this, this.gss);
         this.scene = new Scene(this.gameScene.getRoot());
     }
-    
+
     public void setGameScene() {
         this.scene.setRoot(this.gameScene.getRoot());
         this.scene.setCursor(Cursor.NONE);
         this.activeScene = gameScene;
         this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);
-        this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);
+//        this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);
         this.gameScene.start();
     }
 
     public void setMenuScene() {
         this.scene.setRoot(this.menuScene.getRoot());
         this.activeScene = menuScene;
+    }
+    
+    public void setPlayerMenuScene() {
+        System.out.println("no such thing...");
+    }
+    
+    public void setSettingsMenuScene() {
+        System.out.println("no such thing...");
     }
 
     public Scene getScene() {
@@ -64,5 +74,19 @@ public class SceneDirectorService {
             this.gameScene.stop();
             setMenuScene();
         }
+    }
+    
+    public void exitGame() {
+        Platform.exit();
+        System.exit(0);
+    }
+    
+    // TODO: Both SceneDirectorService and GameStateService have width & height information. Do something about this.
+    public int getSceneWidth() {
+        return this.sceneWidth;
+    }
+    
+    public int getSceneHeight() {
+        return this.sceneHeight;
     }
 }

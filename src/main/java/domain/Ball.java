@@ -26,22 +26,12 @@ public class Ball extends GameObject {
 
     @Override
     public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates) {
-        
-//        if (keyStates[0]) {
-//            this.velocityY--;
-//        } else if (keyStates[1]) {
-//            this.velocityY++;
-//        } else if (keyStates[2]) {
-//            this.velocityX--;
-//        } else if (keyStates[3]) {
-//            this.velocityX++;
-//        } else if (keyStates[4]) {
-//            this.velocityX = 0;
-//            this.velocityY = 0;
-//        }
+
         for (GameObject gameObj : gameObjectList) {
-            if (gameObj == this || gameObj == null || gameObj.colObj == null) continue;
-            
+            if (gameObj == this || gameObj == null || gameObj.colObj == null) {
+                continue;
+            }
+
             if (this.colObj.checkCollision(gameObj.colObj)) {
                 if (gameObj instanceof Ball) {
                     int yMem = this.velocityY;
@@ -50,24 +40,38 @@ public class Ball extends GameObject {
                     this.velocityY = ((Ball) gameObj).velocityY;
                     ((Ball) gameObj).velocityX = xMem;
                     ((Ball) gameObj).velocityY = yMem;
+                } else if (gameObj instanceof Brick) {
+                    gameObj.setWasHitBy(this);
+                    this.velocityX = -this.velocityX;
+                    this.velocityY = -this.velocityY;
                 } else {
                     this.velocityY = -this.velocityY;
                 }
             }
         }
 
-        if (this.x + this.radius >= xBounds || this.x - this.radius <= 0) {
+        if (this.colObj.checkXBoundsCollision(xBounds)) {
             this.velocityX = -this.velocityX;
         }
-        if (this.y + this.radius >= yBounds || this.y - this.radius <= 0) {
+        if (this.colObj.checkYBoundsCollision(yBounds)) {
             this.velocityY = -this.velocityY;
         }
         this.x += this.velocityX;
         this.y += this.velocityY;
-        if (this.x + this.radius > xBounds) this.x = xBounds - this.radius;
-        if (this.x - this.radius < 0) this.x = this.radius;
-        if (this.y + this.radius > yBounds) this.y = yBounds - this.radius;
-        if (this.y - this.radius < 0) this.y = this.radius;
+
+        // Enforce the ball to always stay inside of the bounds
+        if (this.x + this.radius > xBounds) {
+            this.x = xBounds - this.radius;
+        }
+        if (this.x - this.radius < 0) {
+            this.x = this.radius;
+        }
+        if (this.y + this.radius > yBounds) {
+            this.y = yBounds - this.radius;
+        }
+        if (this.y - this.radius < 0) {
+            this.y = this.radius;
+        }
     }
 
     @Override

@@ -13,47 +13,34 @@ import javafx.scene.paint.Color;
  *
  * @author Jonkke
  */
-public class Paddle extends GameObject {
+public class Brick extends GameObject {
 
     private int width;
     private int height;
-    private int moveSpeed;
+    private int health;
 
-    public Paddle(int x, int y) {
-        super(x, y);
-        this.width = 50;
-        this.height = 10;
-        this.moveSpeed = 15;
-        this.colObj = new CollisionObject(width, height, this);
-    }
-
-    public Paddle(int x, int y, int width, int height) {
+    public Brick(int x, int y, int width, int height, int health) {
         super(x, y);
         this.width = width;
         this.height = height;
-        this.moveSpeed = 15;
         this.colObj = new CollisionObject(width, height, this);
+        this.health = health;
     }
 
     @Override
     public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates) {
-        this.x = (int) mouseStates[0];
-        if (this.x < this.width / 2) {
-            this.x = this.width / 2;
+        if (this.wasHitBy instanceof Ball) {
+            this.health--;
+            this.wasHitBy = null;
         }
-        if (this.x > xBounds - this.width / 2) {
-            this.x = xBounds - this.width / 2;
-        }
-        if (keyStates[2]) {
-            this.x -= this.moveSpeed;
-        } else if (keyStates[3]) {
-            this.x += this.moveSpeed;
+        if (this.health <= 0) {
+            this.markForDestruction();
         }
     }
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.RED);
+        gc.setFill(Color.CYAN);
         gc.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     }
 

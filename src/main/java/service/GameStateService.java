@@ -6,10 +6,12 @@
 package service;
 
 import domain.Ball;
+import domain.Brick;
 import domain.GameObject;
 import domain.Paddle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -52,12 +54,15 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
+
+        this.gameObjectList.addAll(buildBrickArray(8, 4, 2));
     }
 
     public void update() {
         for (GameObject obj : gameObjectList) {
             obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, keyStates, mouseStates);
         }
+        this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
         this.keyStates = new boolean[5]; // Reset keys after each update loop, since we may update several times during one frame
     }
 
@@ -73,6 +78,28 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             this.mouseStates[0] = event.getX();
             this.mouseStates[1] = event.getY();
         }
+    }
+
+    // TODO: Isolate to a more sensible class?
+    public List<GameObject> buildBrickArray(int columns, int rows, int gapSize) {
+        List<GameObject> brickArray = new ArrayList();
+        if (columns < 1 || rows < 1) {
+            return brickArray;
+        }
+        int brickWidth = (int) (this.canvasWidth * 0.7 - gapSize * (columns - 1)) / columns;
+        int brickHeight = (int) (this.canvasHeight * 0.2 - gapSize * (rows - 1)) / rows;
+        int posXBase = (int) (this.canvasWidth * 0.150) + (int) (brickWidth / 2);
+        int posX = posXBase;
+        int posY = (int) (this.canvasHeight * 0.1);
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, 1));
+                posX += brickWidth + gapSize;
+            }
+            posX = posXBase;
+            posY += brickHeight + gapSize;
+        }
+        return brickArray;
     }
 
 //    @Override

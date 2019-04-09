@@ -10,8 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import service.SceneDirectorService;
 import service.GameStateService;
 
@@ -49,7 +51,11 @@ public class GameScene extends BaseScene {
             accumulatedTime += timeLast;
             timeLastFrame = timeNow;
             GraphicsContext gc = canvas.getGraphicsContext2D();
+            
+            // TODO: Implement a cleaner way to change BG color
             gc.clearRect(0, 0, canvasWidth, canvasHeight);
+            gc.setFill(Color.BLACK);
+            gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
             while (accumulatedTime >= fixedDTns) {
                 gss.update();
@@ -73,7 +79,7 @@ public class GameScene extends BaseScene {
     };
 
     @Override
-    public Group getRoot() {
+    public Parent getRoot() {
         return this.root;
     }
 

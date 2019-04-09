@@ -38,6 +38,9 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     private int canvasWidth;
     private int canvasHeight;
 
+    // Game status
+    private int lostBallCount;
+
     // Active keys
     // This array contains the current states for all supported keys for the game
     // 0=UP, 1=DOWN, 2=LEFT, 3=RIGHT, 5=HALT
@@ -48,8 +51,9 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         this.canvasWidth = width;
         this.canvasHeight = height;
         this.ball = new Ball(200, 200, 15);
+        this.ball.disableBottomCollision();
         this.ball.setVelocityX(1);
-        this.ball.setVelocityY(3);
+        this.ball.setVelocityY(1);
         this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 20);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
@@ -63,6 +67,13 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, keyStates, mouseStates);
         }
         this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
+        if (this.ball.markedForDestruction()) {
+            this.ball = new Ball(200, 200, 15);
+            this.ball.disableBottomCollision();
+            this.ball.setVelocityX(1);
+            this.ball.setVelocityY(1);
+            this.gameObjectList.add(this.ball);
+        }
         this.keyStates = new boolean[5]; // Reset keys after each update loop, since we may update several times during one frame
     }
 

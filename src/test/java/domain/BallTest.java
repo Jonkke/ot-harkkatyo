@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,11 +16,12 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author jonask
+ * @author Jonkke
  */
 public class BallTest {
 
     Ball ball;
+    List<GameObject> gameObjList;
     int fakeAreaWidth = 1000;
     int fakeAreaHeight = 1000;
 
@@ -36,6 +39,7 @@ public class BallTest {
     @Before
     public void setUp() {
         ball = new Ball(500, 500, 50);
+        gameObjList = new ArrayList();
     }
 
     @After
@@ -46,9 +50,9 @@ public class BallTest {
     public void ballMovesWhenVelocityXIsAddedAndUpdateIsCalled() {
         int oldBallX = ball.getX();
         ball.setVelocityX(5);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(oldBallX + 15, ball.getX());
     }
 
@@ -56,10 +60,10 @@ public class BallTest {
     public void ballMovesWhenVelocityYIsAddedAndUpdateIsCalled() {
         int oldBallY = ball.getY();
         ball.setVelocityY(-18);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(oldBallY + (4 * -18), ball.getY());
     }
 
@@ -67,9 +71,9 @@ public class BallTest {
     public void ballStaysStationaryWhenNoVelocityAndUpdateIsCalled() {
         int oldBallX = ball.getX();
         int oldBallY = ball.getY();
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(oldBallX, ball.getX());
         assertEquals(oldBallY, ball.getY());
     }
@@ -78,12 +82,12 @@ public class BallTest {
     public void ballChangesDirectionWhenItHitsVerticalLowerBounds() {
         ball.setVelocityX(-100);
         int oldVelocityX = ball.getVelocityX();
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(-oldVelocityX, ball.getVelocityX());
     }
 
@@ -91,12 +95,12 @@ public class BallTest {
     public void ballChangesDirectionWhenItHitsHorizontalLowerBounds() {
         ball.setVelocityY(100);
         int oldVelocityY = ball.getVelocityY();
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(-oldVelocityY, ball.getVelocityY());
     }
 
@@ -104,12 +108,12 @@ public class BallTest {
     public void ballChangesDirectionWhenItHitsVerticalUpperBounds() {
         ball.setVelocityX(100);
         int oldVelocityX = ball.getVelocityX();
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(-oldVelocityX, ball.getVelocityX());
     }
 
@@ -117,12 +121,12 @@ public class BallTest {
     public void ballChangesDirectionWhenItHitsHorizontalUpperBounds() {
         ball.setVelocityY(100);
         int oldVelocityY = ball.getVelocityY();
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
-        ball.update(fakeAreaWidth, fakeAreaHeight, null, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
+        ball.update(fakeAreaWidth, fakeAreaHeight, gameObjList, null, null);
         assertEquals(-oldVelocityY, ball.getVelocityY());
     }
 }

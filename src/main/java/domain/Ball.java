@@ -17,6 +17,7 @@ public class Ball extends GameObject {
 
     private int radius;
     private long startTime;
+    private boolean ignoreUpperYBound;
 
     public Ball(int x, int y, int radius) {
         super(x, y);
@@ -54,7 +55,9 @@ public class Ball extends GameObject {
             this.velocityX = -this.velocityX;
         }
         if (this.colObj.checkYBoundsCollision(yBounds)) {
-            this.velocityY = -this.velocityY;
+            if (!this.ignoreUpperYBound) {
+                this.velocityY = -this.velocityY;
+            }
         }
         this.x += this.velocityX;
         this.y += this.velocityY;
@@ -66,12 +69,25 @@ public class Ball extends GameObject {
         if (this.x - this.radius < 0) {
             this.x = this.radius;
         }
-        if (this.y + this.radius > yBounds) {
+        if (!this.ignoreUpperYBound && this.y + this.radius > yBounds) {
             this.y = yBounds - this.radius;
         }
         if (this.y - this.radius < 0) {
             this.y = this.radius;
         }
+        
+        // If ball traveled past the upper Y bounds (=bottom), mark it for destruction
+        if (this.y - this.radius > yBounds) {
+            this.markForDestruction();
+        }
+    }
+
+    /**
+     * Disables the collision test for the bottom edge of the game area for this
+     * ball.
+     */
+    public void disableBottomCollision() {
+        this.ignoreUpperYBound = true;
     }
 
     @Override

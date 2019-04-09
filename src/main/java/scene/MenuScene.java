@@ -7,6 +7,7 @@ package scene;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -22,19 +23,15 @@ import service.SceneDirectorService;
 public class MenuScene extends BaseScene {
 
     private GameStateService gss;
-    private int width;
-    private int height;
     private Canvas canvas;
     private VBox root;
 
     public MenuScene(SceneDirectorService sds, GameStateService gss) {
         super(sds);
         this.gss = gss;
-        this.width = sds.getSceneWidth();
-        this.height = sds.getSceneHeight();
-        this.root = new VBox();
-        this.root.setMinWidth(this.width);
-        this.root.setMinHeight(this.height);
+        this.root = new VBox(10);
+        this.root.setMinSize(sds.getSceneWidth(), sds.getSceneHeight());
+        this.root.setAlignment(Pos.CENTER);
         addMenuItems(this.root);
     }
 

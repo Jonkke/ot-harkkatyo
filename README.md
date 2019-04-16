@@ -12,6 +12,10 @@ This project uses Java 8 and Maven 3.5.2.
 [Architecture](https://github.com/Jonkke/ot-harkkatyo/blob/master/documentation/architecture.md)  
 [Hours used](https://github.com/Jonkke/ot-harkkatyo/blob/master/documentation/usedhours.md)
 
+## Releases
+
+[Week 5](https://github.com/Jonkke/ot-harkkatyo/releases/tag/week5)
+
 ## Running & Testing
 
 ### Testing

@@ -38,7 +38,7 @@ A .jar file can be generated with
 ```
 mvn package
 ```
-The generated .jar can run from the "target" directory with
+The generated .jar can be run from the "target" directory with
 ```
 java -jar OMBC-1.0-SNAPSHOT.jar
 ```

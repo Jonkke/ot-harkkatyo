@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Jonkke
  */
+// TODO: Clear up this EventHandler thingy...
 public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler<MouseEvent> {
 
     // Game objects
@@ -89,6 +90,10 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             this.mouseStates[0] = event.getX();
             this.mouseStates[1] = event.getY();
         }
+    }
+    
+    public List<GameObject> getGameObjectList() {
+        return this.gameObjectList;
     }
 
     // TODO: Isolate to a more sensible class?

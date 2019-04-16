@@ -31,3 +31,14 @@ You can launch the game by running the command
 ```
 mvn compile exec:java -Dexec.mainClass=main.App
 ```
+
+### jar generation
+
+A .jar file can be generated with
+```
+mvn package
+```
+The generated .jar can run from the "target" directory with
+```
+java -jar OMBC-1.0-SNAPSHOT.jar
+```

@@ -7,4 +7,5 @@
 |2.4| 6   | Game engine with working game loop now working, still needs expanding |
 |8.4| 3   | Added Brick class, improved collision detection and physics |
 |9.4| 6   | Added more scenes (no functionality yet), documentation, improvements |
-| Total | 22   | |
+|17.4| 7  | Looked into JBox2D, wrote more tests, created a github release, sequence diagram drawn |
+| Total | 29   | |

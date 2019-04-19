@@ -51,16 +51,16 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     public GameStateService(int width, int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
-        this.ball = new Ball(200, 200, 15);
+        this.ball = new Ball(200, 200, 7);
         this.ball.disableBottomCollision();
         this.ball.setVelocityX(1);
-        this.ball.setVelocityY(1);
-        this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 20);
+        this.ball.setVelocityY(2);
+        this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 80, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
 
-        this.gameObjectList.addAll(buildBrickArray(8, 4, 2));
+        this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
     }
 
     public void update() {
@@ -69,10 +69,10 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         }
         this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
         if (this.ball.markedForDestruction()) {
-            this.ball = new Ball(200, 200, 15);
+            this.ball = new Ball(200, 200, 7);
             this.ball.disableBottomCollision();
             this.ball.setVelocityX(1);
-            this.ball.setVelocityY(1);
+            this.ball.setVelocityY(2);
             this.gameObjectList.add(this.ball);
         }
         this.keyStates = new boolean[5]; // Reset keys after each update loop, since we may update several times during one frame
@@ -91,7 +91,7 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             this.mouseStates[1] = event.getY();
         }
     }
-    
+
     public List<GameObject> getGameObjectList() {
         return this.gameObjectList;
     }

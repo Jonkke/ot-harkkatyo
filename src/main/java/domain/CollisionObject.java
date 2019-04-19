@@ -55,9 +55,56 @@ public class CollisionObject {
                     && this.getHostY() + this.radius >= cobj.getHostY() - cobj.height / 2
                     && this.getHostY() - this.radius <= cobj.getHostY() + cobj.height / 2;
         }
-        // TODO: prevent objets from getting stuck inside each other
-        // TODO: work out a way to determine the side of collision when a circle hits a rectangle
         return false;
+    }
+
+    /**
+     * This method returns the side that was hit in another object. It is assumed
+     * that a collision event has been confirmed with the checkCollision() beforehand
+     * @param cobj the object we are colliding with
+     * @return the side in the other object we hit, 0=top, 1=right, 2=bottom, 3=left
+     */
+    public int whichSideHit(CollisionObject cobj) {
+        int thisLeftX;
+        int thisRightX;
+        int thisTopY;
+        int thisBottomY;
+
+        if (this.type == "circle") {
+            thisLeftX = this.getHostX();
+            thisRightX = this.getHostX();
+            thisTopY = this.getHostY();
+            thisBottomY = this.getHostY();
+        } else {
+            thisLeftX = this.getHostX() - this.width / 2;
+            thisRightX = this.getHostX() + this.width / 2;
+            thisTopY = this.getHostY() - this.height / 2;
+            thisBottomY = this.getHostY() + this.height / 2;
+        }
+
+        int otherLeftX = cobj.getHostX() - cobj.width / 2;
+        int otherRightX = cobj.getHostX() + cobj.width / 2;
+        int otherTopY = cobj.getHostY() - cobj.height / 2;
+        int otherBottomY = cobj.getHostY() + cobj.height / 2;
+
+        int tc = thisBottomY - otherTopY;
+        int bc = otherBottomY - thisTopY;
+        int rc = otherRightX - thisLeftX;
+        int lc = thisRightX - otherLeftX;
+
+//        int tc = this.getHostY() - cobj.getHostY();
+//        int bc = cobj.getHostY() - this.getHostY();
+//        int rc = cobj.getHostX() - this.getHostX();
+//        int lc = this.getHostX() - cobj.getHostX();
+        if (tc < bc && tc < rc && tc < lc) {
+            return 0;
+        } else if (bc < tc && bc < rc && bc < lc) {
+            return 2;
+        } else if (rc < tc && rc < bc && rc < lc) {
+            return 1;
+        } else {
+            return 3;
+        }
     }
 
     /**

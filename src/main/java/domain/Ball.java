@@ -41,12 +41,28 @@ public class Ball extends GameObject {
                     this.velocityY = ((Ball) gameObj).velocityY;
                     ((Ball) gameObj).velocityX = xMem;
                     ((Ball) gameObj).velocityY = yMem;
-                } else if (gameObj instanceof Brick) {
+                } else if (gameObj instanceof Brick || gameObj instanceof Paddle) {
                     gameObj.setWasHitBy(this);
-                    this.velocityX = -this.velocityX;
-                    this.velocityY = -this.velocityY;
-                } else {
-                    this.velocityY = -this.velocityY;
+                    int side = this.colObj.whichSideHit(gameObj.colObj);  // Get the side/direction we hit the object to
+                    int gameObjWidth;
+                    int gameObjHeight;
+                    gameObjWidth = gameObj instanceof Brick ? ((Brick) gameObj).getWidth() : ((Paddle) gameObj).getWidth();
+                    gameObjHeight = gameObj instanceof Brick ? ((Brick) gameObj).getHeight() : ((Paddle) gameObj).getHeight();
+                    
+                    // Here the ball gets pushed outside of the colliding object, to the opposite direction of the hit
+                    if (side == 0) {
+                        this.setY(gameObj.getY() - gameObjHeight / 2 - this.radius - 1);
+                        this.velocityY = -this.velocityY;
+                    } else if (side == 2) {
+                        this.setY(gameObj.getY() + gameObjHeight / 2 + this.radius + 1);
+                        this.velocityY = -this.velocityY;
+                    } else if (side == 1) {
+                        this.setX(gameObj.getX() + gameObjWidth / 2 + this.radius + 1);
+                        this.velocityX = -this.velocityX;
+                    } else {
+                        this.setX(gameObj.getX() - gameObjWidth / 2 - this.radius - 1);
+                        this.velocityX = -this.velocityX;
+                    }
                 }
             }
         }
@@ -56,6 +72,8 @@ public class Ball extends GameObject {
         }
         if (this.colObj.checkYBoundsCollision(yBounds)) {
             if (!this.ignoreUpperYBound) {
+                this.velocityY = -this.velocityY;
+            } else if (this.y - this.radius <= 0) {
                 this.velocityY = -this.velocityY;
             }
         }
@@ -75,7 +93,7 @@ public class Ball extends GameObject {
         if (this.y - this.radius < 0) {
             this.y = this.radius;
         }
-        
+
         // If ball traveled past the upper Y bounds (=bottom), mark it for destruction
         if (this.y - this.radius > yBounds) {
             this.markForDestruction();

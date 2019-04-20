@@ -17,13 +17,15 @@ public class Brick extends GameObject {
 
     private int width;
     private int height;
+    private Color color;
     private int health;
 
-    public Brick(int x, int y, int width, int height, int health) {
+    public Brick(int x, int y, int width, int height, Color color, int health) {
         super(x, y);
         this.width = width;
         this.height = height;
         this.colObj = new CollisionObject(width, height, this);
+        this.color = color;
         this.health = health;
     }
 
@@ -40,7 +42,7 @@ public class Brick extends GameObject {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.CYAN);
+        gc.setFill(this.color);
         gc.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     }
 

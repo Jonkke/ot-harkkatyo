@@ -122,8 +122,13 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         int posX = posXBase;
         int posY = (int) (this.canvasHeight * 0.1);
         for (int y = 0; y < rows; y++) {
+            Color color = 
+                    y == 0 || y == 1 ? Color.YELLOW :
+                    y == 2 || y == 3 ? Color.GREEN :
+                    y == 4 || y == 5 ? Color.ORANGE :
+                    Color.RED;
             for (int x = 0; x < columns; x++) {
-                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, 1));
+                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, color, 1));
                 posX += brickWidth + gapSize;
             }
             posX = posXBase;

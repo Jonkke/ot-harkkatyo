@@ -65,10 +65,10 @@ public class CollisionObject {
      * @return the side in the other object we hit, 0=top, 1=right, 2=bottom, 3=left
      */
     public int whichSideHit(CollisionObject cobj) {
-        int thisLeftX;
-        int thisRightX;
-        int thisTopY;
-        int thisBottomY;
+        double thisLeftX;
+        double thisRightX;
+        double thisTopY;
+        double thisBottomY;
 
         if (this.type == "circle") {
             thisLeftX = this.getHostX();
@@ -82,15 +82,15 @@ public class CollisionObject {
             thisBottomY = this.getHostY() + this.height / 2;
         }
 
-        int otherLeftX = cobj.getHostX() - cobj.width / 2;
-        int otherRightX = cobj.getHostX() + cobj.width / 2;
-        int otherTopY = cobj.getHostY() - cobj.height / 2;
-        int otherBottomY = cobj.getHostY() + cobj.height / 2;
+        double otherLeftX = cobj.getHostX() - cobj.width / 2;
+        double otherRightX = cobj.getHostX() + cobj.width / 2;
+        double otherTopY = cobj.getHostY() - cobj.height / 2;
+        double otherBottomY = cobj.getHostY() + cobj.height / 2;
 
-        int tc = thisBottomY - otherTopY;
-        int bc = otherBottomY - thisTopY;
-        int rc = otherRightX - thisLeftX;
-        int lc = thisRightX - otherLeftX;
+        double tc = thisBottomY - otherTopY;
+        double bc = otherBottomY - thisTopY;
+        double rc = otherRightX - thisLeftX;
+        double lc = thisRightX - otherLeftX;
 
 //        int tc = this.getHostY() - cobj.getHostY();
 //        int bc = cobj.getHostY() - this.getHostY();
@@ -129,11 +129,11 @@ public class CollisionObject {
         return this.getHostY() + this.radius >= yBounds || this.getHostY() - this.radius <= 0;
     }
 
-    public int getHostX() {
+    public double getHostX() {
         return this.hostObj.x;
     }
 
-    public int getHostY() {
+    public double getHostY() {
         return this.hostObj.y;
     }
 

@@ -17,7 +17,7 @@ public class Paddle extends GameObject {
 
     private int width;
     private int height;
-    private int moveSpeed;
+    private double moveSpeed;
 
     public Paddle(int x, int y) {
         super(x, y);

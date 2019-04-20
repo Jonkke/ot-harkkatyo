@@ -45,6 +45,8 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
 
     // Game status
     private int lostBallCount;
+    private int points;
+    private double ballSpeed;
 
     // Active keys
     // This array contains the current states for all supported keys for the game
@@ -55,16 +57,19 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     public GameStateService(int width, int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
-        this.ball = new Ball(200, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
-        this.ball.disableBottomCollision();
-        this.ball.setVelocityX(1);
-        this.ball.setVelocityY(2);
+        this.ball = new Ball(500, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
         this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 80, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
 
         this.lostBallCount = 0;
+        this.points = 0;
+        this.ballSpeed = 1.3;
+
+        this.ball.disableBottomCollision();
+        this.ball.setHeading(270);
+        this.ball.setVelocity(ballSpeed);
 
         this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
     }
@@ -73,12 +78,17 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         for (GameObject obj : gameObjectList) {
             obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, keyStates, mouseStates);
         }
+        this.gameObjectList.forEach(ob -> {
+            if (ob instanceof Brick && ob.markedForDestruction()) {
+                this.points += ((Brick) ob).getValue();
+            }
+        });
         this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
         if (this.ball.markedForDestruction()) {
             this.ball = new Ball(200, 200, 7);
             this.ball.disableBottomCollision();
-            this.ball.setVelocityX(1);
-            this.ball.setVelocityY(2);
+            this.ball.setHeading(270);
+            this.ball.setVelocity(ballSpeed);
             this.gameObjectList.add(this.ball);
 
             this.lostBallCount++;
@@ -94,7 +104,7 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         gc.setFont(Font.font("monospace", FontWeight.LIGHT, FontPosture.REGULAR, 15));
         gc.fillText("Player: ", 10, 25); // TODO: HIGH PRIORITY: Player!
         gc.fillText("Lost balls: " + this.lostBallCount, 10, 40);
-        gc.fillText("Score: ", 10, 55); // TODO: HIGH PRIORITY: Score!
+        gc.fillText("Score: " + this.points, 10, 55); // TODO: HIGH PRIORITY: Score!
 
     }
 
@@ -122,13 +132,16 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         int posX = posXBase;
         int posY = (int) (this.canvasHeight * 0.1);
         for (int y = 0; y < rows; y++) {
-            Color color = 
-                    y == 0 || y == 1 ? Color.YELLOW :
-                    y == 2 || y == 3 ? Color.GREEN :
-                    y == 4 || y == 5 ? Color.ORANGE :
-                    Color.RED;
+            Color color
+                    = y == 0 || y == 1 ? Color.YELLOW
+                            : y == 2 || y == 3 ? Color.GREEN
+                                    : y == 4 || y == 5 ? Color.ORANGE
+                                            : Color.RED;
+            int value = y == 0 || y == 1 ? 7
+                    : y == 2 || y == 3 ? 5
+                            : y == 4 || y == 5 ? 3 : 1;
             for (int x = 0; x < columns; x++) {
-                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, color, 1));
+                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, color, 1, value));
                 posX += brickWidth + gapSize;
             }
             posX = posXBase;

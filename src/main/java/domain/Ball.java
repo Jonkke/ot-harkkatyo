@@ -16,7 +16,6 @@ import javafx.scene.paint.Color;
 public class Ball extends GameObject {
 
     private int radius;
-    private long startTime;
     private boolean ignoreUpperYBound;
 
     public Ball(int x, int y, int radius) {
@@ -35,8 +34,8 @@ public class Ball extends GameObject {
 
             if (this.colObj.checkCollision(gameObj.colObj)) {
                 if (gameObj instanceof Ball) {
-                    int yMem = this.velocityY;
-                    int xMem = this.velocityX;
+                    double yMem = this.velocityY;
+                    double xMem = this.velocityX;
                     this.velocityX = ((Ball) gameObj).velocityX;
                     this.velocityY = ((Ball) gameObj).velocityY;
                     ((Ball) gameObj).velocityX = xMem;
@@ -48,11 +47,20 @@ public class Ball extends GameObject {
                     int gameObjHeight;
                     gameObjWidth = gameObj instanceof Brick ? ((Brick) gameObj).getWidth() : ((Paddle) gameObj).getWidth();
                     gameObjHeight = gameObj instanceof Brick ? ((Brick) gameObj).getHeight() : ((Paddle) gameObj).getHeight();
-                    
+
                     // Here the ball gets pushed outside of the colliding object, to the opposite direction of the hit
                     if (side == 0) {
                         this.setY(gameObj.getY() - gameObjHeight / 2 - this.radius - 1);
-                        this.velocityY = -this.velocityY;
+
+                        // When hitting the paddle, redirect the ball according to the part of paddle that was hit
+                        if (gameObj instanceof Paddle) {
+                            double newAngleFactor = (this.x - (gameObj.x - ((Paddle) gameObj).getWidth() / 2)) / ((Paddle) gameObj).getWidth();
+                            newAngleFactor = Math.max(0, Math.min(1, newAngleFactor));
+                            double newAngle = 45 + (1 - newAngleFactor) * 90;
+                            this.setHeading(newAngle);
+                        } else {
+                            this.velocityY = -this.velocityY;
+                        }
                     } else if (side == 2) {
                         this.setY(gameObj.getY() + gameObjHeight / 2 + this.radius + 1);
                         this.velocityY = -this.velocityY;
@@ -77,6 +85,7 @@ public class Ball extends GameObject {
                 this.velocityY = -this.velocityY;
             }
         }
+        
         this.x += this.velocityX;
         this.y += this.velocityY;
 

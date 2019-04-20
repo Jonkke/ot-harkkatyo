@@ -7,6 +7,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.paint.Color;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class BrickTest {
 
     @Before
     public void setUp() {
-        brick = new Brick(100, 100, 200, 50, 1);
+        brick = new Brick(100, 100, 200, 50, Color.BLACK, 1, 1);
         ball = new Ball(150, 70, 4);
         gameObjectList = new ArrayList();
         gameObjectList.add(brick);

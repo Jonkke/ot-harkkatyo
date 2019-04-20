@@ -56,7 +56,7 @@ public class PaddleTest {
         for (int i = 0; i < 5; i++) {
             gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, keyStates, mouseStates));
         }
-        assertEquals(-5, ball.getVelocityY());
+        assertEquals(-5, ball.getVelocityY(), 0.1);
     }
 
     @Test
@@ -64,6 +64,6 @@ public class PaddleTest {
         boolean[] keyStates = {false, false, false, false, false};
         double[] mouseStates = {250.4, 605.34};
         gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, keyStates, mouseStates));
-        assertEquals((int) mouseStates[0], paddle.getX());
+        assertEquals((int) mouseStates[0], paddle.getX(), 0.1);
     }
 }

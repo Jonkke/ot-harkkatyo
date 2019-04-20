@@ -19,14 +19,16 @@ public class Brick extends GameObject {
     private int height;
     private Color color;
     private int health;
+    private int value;
 
-    public Brick(int x, int y, int width, int height, Color color, int health) {
+    public Brick(int x, int y, int width, int height, Color color, int health, int value) {
         super(x, y);
         this.width = width;
         this.height = height;
         this.colObj = new CollisionObject(width, height, this);
         this.color = color;
         this.health = health;
+        this.value = value;
     }
 
     @Override
@@ -56,6 +58,10 @@ public class Brick extends GameObject {
 
     public int getWidth() {
         return this.width;
+    }
+    
+    public int getValue() {
+        return this.value;
     }
 
 }

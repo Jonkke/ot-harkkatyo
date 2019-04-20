@@ -18,15 +18,17 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class GameObject {
 
-    protected int x;
-    protected int y;
-    protected int velocityX;
-    protected int velocityY;
+    protected double x;
+    protected double y;
+    protected double velocity;
+    protected double headingAngleDegrees;
+    protected double velocityX;
+    protected double velocityY;
     protected CollisionObject colObj;
     protected GameObject wasHitBy;
     protected boolean destroyed; // If true, the object will be deleted during the update cycle
 
-    public GameObject(int x, int y) {
+    public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
         this.velocityX = 0;
@@ -55,54 +57,78 @@ public abstract class GameObject {
      */
     abstract public void draw(GraphicsContext gc);
 
-    public void setX(int x) {
+    /**
+     * Sets the speed this object is traveling at, towards the current angular
+     * value denoted by the headingAngleDegrees value.
+     *
+     * @param velocity new velocity value for this object
+     */
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
+        double xVelocityFactor = Math.cos(this.headingAngleDegrees * Math.PI / 180);
+        double yVelocityFactor = -Math.sin(this.headingAngleDegrees * Math.PI / 180);  // negative, as the Y axis grows towards the bottom
+        this.setVelocityX(this.velocity * xVelocityFactor);
+        this.setVelocityY(this.velocity * yVelocityFactor);
+    }
+
+    /**
+     * Sets the angular heading for this object.
+     *
+     * @param headingAngleDegrees new heading angle for this object
+     */
+    public void setHeading(double headingAngleDegrees) {
+        this.headingAngleDegrees = headingAngleDegrees;
+        setVelocity(this.velocity);
+    }
+
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getVelocityX() {
+    public double getVelocityX() {
         return velocityX;
     }
 
-    public void setVelocityX(int velocityX) {
+    public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
     }
 
-    public int getVelocityY() {
+    public double getVelocityY() {
         return velocityY;
     }
 
-    public void setVelocityY(int velocityY) {
+    public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
-    public void accelerateX(int accX) {
+    public void accelerateX(double accX) {
         this.velocityX += accX;
     }
 
-    public void accelerateY(int accY) {
+    public void accelerateY(double accY) {
         this.velocityY += accY;
     }
-    
+
     public void markForDestruction() {
         this.destroyed = true;
     }
-    
+
     public boolean markedForDestruction() {
         return this.destroyed;
     }
-    
+
     public void setWasHitBy(GameObject gameObj) {
         this.wasHitBy = gameObj;
     }

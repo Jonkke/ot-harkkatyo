@@ -40,7 +40,7 @@ public class GameScene extends BaseScene {
     }
 
     AnimationTimer loop = new AnimationTimer() {
-        private int fpsCap = 60;
+        private int fpsCap = 120;
         private int fixedDTns = 5 * 1000000;
         private long timeLastFrame = System.nanoTime();
         private long accumulatedTime = 0;

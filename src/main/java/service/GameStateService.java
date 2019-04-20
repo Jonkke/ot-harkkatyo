@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 /**
  * This service holds all the information pertaining to a single game session,
@@ -51,7 +55,7 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     public GameStateService(int width, int height) {
         this.canvasWidth = width;
         this.canvasHeight = height;
-        this.ball = new Ball(200, 200, 7);
+        this.ball = new Ball(200, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
         this.ball.disableBottomCollision();
         this.ball.setVelocityX(1);
         this.ball.setVelocityY(2);
@@ -59,6 +63,8 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
+
+        this.lostBallCount = 0;
 
         this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
     }
@@ -74,6 +80,8 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             this.ball.setVelocityX(1);
             this.ball.setVelocityY(2);
             this.gameObjectList.add(this.ball);
+
+            this.lostBallCount++;
         }
         this.keyStates = new boolean[5]; // Reset keys after each update loop, since we may update several times during one frame
     }
@@ -82,6 +90,12 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         for (GameObject obj : gameObjectList) {
             obj.draw(gc);
         }
+        gc.setFill(Color.WHITE);
+        gc.setFont(Font.font("monospace", FontWeight.LIGHT, FontPosture.REGULAR, 15));
+        gc.fillText("Player: ", 10, 25); // TODO: HIGH PRIORITY: Player!
+        gc.fillText("Lost balls: " + this.lostBallCount, 10, 40);
+        gc.fillText("Score: ", 10, 55); // TODO: HIGH PRIORITY: Score!
+
     }
 
     @Override

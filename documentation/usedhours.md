@@ -8,4 +8,6 @@
 |8.4| 3   | Added Brick class, improved collision detection and physics |
 |9.4| 6   | Added more scenes (no functionality yet), documentation, improvements |
 |17.4| 7  | Looked into JBox2D, wrote more tests, created a github release, sequence diagram drawn |
-| Total | 29   | |
+|19.4| 4  | Improved collision checks, they now work more or less as they are expected to |
+|20.4| 5  | More tweaks to physics, added score counting, added ball direction with paddle, among other things |
+| Total | 38   | |

@@ -50,7 +50,8 @@ public class PaddleTest {
 
     @Test
     public void padddleBouncesBallBack() {
-        ball.setVelocityY(5);
+        ball.setVelocity(5);
+        ball.setHeading(270);
         boolean[] keyStates = {false, false, false, false, false};
         double[] mouseStates = {250.4, 605.34};
         for (int i = 0; i < 5; i++) {

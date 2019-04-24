@@ -33,7 +33,7 @@ import javafx.scene.text.FontWeight;
  */
 // TODO: Clear up this EventHandler thingy...
 public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler<MouseEvent> {
-
+    
     // Game objects
     private Ball ball;
     private Paddle paddle;
@@ -65,7 +65,7 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
 
         this.lostBallCount = 0;
         this.points = 0;
-        this.ballSpeed = 3.3;
+        this.ballSpeed = 2.2;
 
         this.ball.disableBottomCollision();
         this.ball.setHeading(270);

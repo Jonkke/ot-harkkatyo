@@ -43,8 +43,8 @@ public class DatabaseService {
         stmt.execute();
         stmt = this.conn.prepareStatement("CREATE TABLE IF NOT EXISTS Score "
                 + "(id INTEGER PRIMARY KEY,"
-                + "score INTEGER,"
-                + "scoreDate INTEGER,"
+                + "points INTEGER,"
+                + "scoreDateMillis INTEGER,"
                 + "scoreTimeMillis INTEGER,"
                 + "playerId INTEGER,"
                 + "FOREIGN KEY(playerId) REFERENCES Player(id))");

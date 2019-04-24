@@ -19,7 +19,7 @@ public class Score {
     private int id;
     private int points;
     private Date scoreDate;
-    private int scoreTime;
+    private long scoreTime;
     private int playerId;
 
     public int getId() {
@@ -46,11 +46,11 @@ public class Score {
         this.scoreDate = scoreDate;
     }
 
-    public int getScoreTime() {
+    public long getScoreTime() {
         return scoreTime;
     }
 
-    public void setScoreTime(int scoreTime) {
+    public void setScoreTime(long scoreTime) {
         this.scoreTime = scoreTime;
     }
 
@@ -62,7 +62,7 @@ public class Score {
         this.playerId = playerId;
     }
     
-    public Score(int id, int points, Date scoreDate, int scoreTime, int playerId) {
+    public Score(int id, int points, Date scoreDate, long scoreTime, int playerId) {
         this.id = id;
         this.points = points;
         this.scoreDate = scoreDate;

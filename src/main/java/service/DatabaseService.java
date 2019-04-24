@@ -39,7 +39,7 @@ public class DatabaseService {
     private void createNonExistingTables(Connection conn) throws SQLException {
         PreparedStatement stmt = this.conn.prepareStatement("CREATE TABLE IF NOT EXISTS Player "
                 + "(id INTEGER PRIMARY KEY,"
-                + "name TEXT)");
+                + "name TEXT UNIQUE)");
         stmt.execute();
         stmt = this.conn.prepareStatement("CREATE TABLE IF NOT EXISTS Score "
                 + "(id INTEGER PRIMARY KEY,"

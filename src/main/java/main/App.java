@@ -2,6 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import service.DatabaseService;
 import service.SceneDirectorService;
 
 /**
@@ -12,9 +13,12 @@ import service.SceneDirectorService;
 public class App extends Application {
 
     SceneDirectorService sceneDirector;
+    DatabaseService dbs;
 
     public App() {
         this.sceneDirector = new SceneDirectorService();
+        this.dbs = new DatabaseService();
+        this.dbs.connect();
     }
 
     @Override

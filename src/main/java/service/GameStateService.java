@@ -65,7 +65,7 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
 
         this.lostBallCount = 0;
         this.points = 0;
-        this.ballSpeed = 1.3;
+        this.ballSpeed = 3.3;
 
         this.ball.disableBottomCollision();
         this.ball.setHeading(270);

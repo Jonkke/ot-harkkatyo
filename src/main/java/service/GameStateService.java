@@ -9,6 +9,7 @@ import domain.Ball;
 import domain.Brick;
 import domain.GameObject;
 import domain.Paddle;
+import domain.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,9 @@ import javafx.scene.text.FontWeight;
  */
 // TODO: Clear up this EventHandler thingy...
 public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler<MouseEvent> {
-    
+
+    private Player activePlayer;
+
     // Game objects
     private Ball ball;
     private Paddle paddle;
@@ -55,6 +58,8 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     private double[] mouseStates = new double[2];
 
     public GameStateService(int width, int height) {
+        this.activePlayer = new Player(1, "default");
+
         this.canvasWidth = width;
         this.canvasHeight = height;
         this.ball = new Ball(500, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
@@ -102,9 +107,10 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         }
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font("monospace", FontWeight.LIGHT, FontPosture.REGULAR, 15));
-        gc.fillText("Player: ", 10, 25); // TODO: HIGH PRIORITY: Player!
+        gc.fillText("Player: " + this.activePlayer.getName(), 10, 25);
         gc.fillText("Lost balls: " + this.lostBallCount, 10, 40);
-        gc.fillText("Score: " + this.points, 10, 55); // TODO: HIGH PRIORITY: Score!
+        gc.fillText("Score: " + this.points, 10, 55);
+        gc.fillText("time: ", 10, 70);
 
     }
 
@@ -120,7 +126,22 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         return this.gameObjectList;
     }
 
-    // TODO: Isolate to a more sensible class?
+    public Player getActivePlayer() {
+        return this.activePlayer;
+    }
+
+    public void setActivePlayer(Player player) {
+        this.activePlayer = player;
+    }
+
+    public int getCanvasWidth() {
+        return this.canvasWidth;
+    }
+
+    public int getCanvasHeight() {
+        return this.canvasHeight;
+    }
+
     public List<GameObject> buildBrickArray(int columns, int rows, int gapSize) {
         List<GameObject> brickArray = new ArrayList();
         if (columns < 1 || rows < 1) {
@@ -148,50 +169,6 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
             posY += brickHeight + gapSize;
         }
         return brickArray;
-    }
-
-//    @Override
-//    public void handle(KeyEvent event) {
-//        if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-//            switch (event.getCode()) {
-//                case UP:
-//                    this.keyStates[0] = true;
-//                    break;
-//                case DOWN:
-//                    this.keyStates[1] = true;
-//                    break;
-//                case LEFT:
-//                    this.keyStates[2] = true;
-//                    break;
-//                case RIGHT:
-//                    this.keyStates[3] = true;
-//                    break;
-//                case SPACE:
-//                    this.keyStates[4] = true;
-//            }
-//        } else {
-//            switch (event.getCode()) {
-//                case UP:
-//                    this.keyStates[0] = false;
-//                    break;
-//                case DOWN:
-//                    this.keyStates[1] = false;
-//                    break;
-//                case LEFT:
-//                    this.keyStates[2] = false;
-//                    break;
-//                case RIGHT:
-//                    this.keyStates[3] = false;
-//                    break;
-//            }
-//        }
-//    }
-    public int getCanvasWidth() {
-        return this.canvasWidth;
-    }
-
-    public int getCanvasHeight() {
-        return this.canvasHeight;
     }
 
 }

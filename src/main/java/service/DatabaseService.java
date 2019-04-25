@@ -56,7 +56,7 @@ public class DatabaseService {
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()) {
             stmt = this.conn.prepareStatement("INSERT INTO Player (name) VALUES (?)");
-            stmt.setString(1, "Default");
+            stmt.setString(1, "default");
             stmt.execute();
         }
     }

@@ -5,29 +5,45 @@
  */
 package scene;
 
+import dao.PlayerDao;
+import domain.Player;
+import java.util.List;
+import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import service.DatabaseService;
 import service.GameStateService;
 import service.SceneDirectorService;
 
 /**
- *
+ * This class represents the scene view where a player profile can be chosen from
+ * existing ones, or new one created.
+ * 
  * @author Jonkke
  */
-public class PlayerScene extends BaseScene {
+public class PlayerScene extends BaseScene {  // TODO: This whole thing could use some serious cleanup...
 
-    // TODO: Create player creation / loading scene
-    // TODO: Create a database to hold player information, along with DAO class and other necessary stuff
+    PlayerDao pd;
+    List<Player> playerList;
+
     private GameStateService gss;
     private VBox root;
+    private ObservableList<String> playerNames;
 
-    public PlayerScene(SceneDirectorService sds, GameStateService gss) {
+    public PlayerScene(SceneDirectorService sds, GameStateService gss, DatabaseService dbs) {
         super(sds);
+        this.pd = new PlayerDao(dbs);
+        this.playerList = this.pd.getAll();
         this.gss = gss;
         this.root = new VBox(10);
         this.root.setMinSize(sds.getSceneWidth(), sds.getSceneHeight());
@@ -35,10 +51,77 @@ public class PlayerScene extends BaseScene {
         addPlayerMenuItems(this.root);
     }
     
+    private void updateListNames() {
+        this.playerNames = FXCollections.observableArrayList(this.playerList.stream().map(p -> p.getName()).collect(Collectors.toList()));
+    }
+
     private void addPlayerMenuItems(VBox root) {
-        Label testLabel = new Label();
-        testLabel.setText("Player scene. Nothing here yet...");
+        Label selectedPlayerLabel = new Label();
+        selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());
         
+        updateListNames();
+        final ListView<String> namesList = new ListView(playerNames);
+        namesList.setPrefWidth(300);
+
+        // Add new player label, field and button
+        GridPane addPlayerPane = new GridPane();
+
+        Label addPlayerLabel = new Label();
+        addPlayerLabel.setText("Add new player: ");
+
+        TextField addPlayerTF = new TextField();
+
+        Button addPlayerBtn = new Button();
+        addPlayerBtn.setText("Add player");
+        addPlayerBtn.setOnAction(event -> {
+            Thread t = new Thread(new Runnable() {  // Async way of adding new player... sort of
+                @Override
+                public void run() {
+                    pd.save(new Player(-1, addPlayerTF.getText()));
+                    playerList = pd.getAll();
+                }
+
+            });
+            t.start();
+            namesList.getItems().add(addPlayerTF.getText());
+            addPlayerTF.setText("");
+        });
+
+        addPlayerPane.setAlignment(Pos.CENTER);
+        addPlayerPane.setHgap(10);
+        addPlayerPane.add(addPlayerLabel, 0, 0);
+        addPlayerPane.add(addPlayerTF, 1, 0);
+        addPlayerPane.add(addPlayerBtn, 2, 0);
+
+        // Player selection & deletion
+        Button selectBtn = new Button();
+        selectBtn.setText("Select player");
+        selectBtn.setOnAction(event -> {
+            int selectedIndex = namesList.getSelectionModel().getSelectedIndex();
+            this.gss.setActivePlayer(this.playerList.get(selectedIndex));
+            selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());
+        });
+        Button deleteBtn = new Button();
+        deleteBtn.setText("Delete selected player");
+        deleteBtn.setOnAction(event -> {
+            int i = namesList.getSelectionModel().getSelectedIndex();
+            if (i == 0) {
+                return; // Don't ever delete default player
+            }
+            if (this.gss.getActivePlayer() == this.playerList.get(i)) {
+                this.gss.setActivePlayer(playerList.get(0));
+            }
+            this.pd.delete(playerList.get(i));
+            this.playerList = this.pd.getAll();
+            this.updateListNames();
+            namesList.setItems(playerNames);
+        });
+        GridPane lowerBtnPane = new GridPane();
+        lowerBtnPane.setHgap(10);
+        lowerBtnPane.setAlignment(Pos.CENTER);
+        lowerBtnPane.add(selectBtn, 0, 0);
+        lowerBtnPane.add(deleteBtn, 1, 0);
+
         Button backBtn = new Button();
         backBtn.setText("Back to main menu");
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -47,8 +130,11 @@ public class PlayerScene extends BaseScene {
                 sds.setMenuScene();
             }
         });
-        
-        root.getChildren().add(testLabel);
+
+        root.getChildren().add(selectedPlayerLabel);
+        root.getChildren().add(addPlayerPane);
+        root.getChildren().add(namesList);
+        root.getChildren().add(lowerBtnPane);
         root.getChildren().add(backBtn);
     }
 

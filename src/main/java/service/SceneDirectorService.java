@@ -27,6 +27,7 @@ public class SceneDirectorService {
     private int sceneWidth;
     private int sceneHeight;
 
+    private DatabaseService dbs;
     private GameStateService gss;
     private Scene scene;
     private BaseScene activeScene;
@@ -38,10 +39,12 @@ public class SceneDirectorService {
     public SceneDirectorService() {
         this.sceneWidth = 1024;
         this.sceneHeight = 768;
+        this.dbs = new DatabaseService();
+        this.dbs.connect();
         this.gss = new GameStateService(sceneWidth, sceneHeight);
         this.gameScene = new GameScene(this, this.gss);
         this.menuScene = new MenuScene(this, this.gss);
-        this.playerScene = new PlayerScene(this, this.gss);
+        this.playerScene = new PlayerScene(this, this.gss, this.dbs);
         this.settingsScene = new SettingsScene(this, this.gss);
         this.scene = new Scene(this.gameScene.getRoot());
     }

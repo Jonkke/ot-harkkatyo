@@ -17,12 +17,9 @@ import service.SceneDirectorService;
 public class App extends Application {
 
     SceneDirectorService sceneDirector;
-    DatabaseService dbs;
 
     public App() {
         this.sceneDirector = new SceneDirectorService();
-        this.dbs = new DatabaseService();
-        this.dbs.connect();
     }
 
     @Override

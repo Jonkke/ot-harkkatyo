@@ -10,4 +10,5 @@
 |17.4| 7  | Looked into JBox2D, wrote more tests, created a github release, sequence diagram drawn |
 |19.4| 4  | Improved collision checks, they now work more or less as they are expected to |
 |20.4| 5  | More tweaks to physics, added score counting, added ball direction with paddle, among other things |
-| Total | 38   | |
+|24.4| 8 | Began implementing database, Dao classes and player & score scenes, among other things |
+| Total | 46   | |

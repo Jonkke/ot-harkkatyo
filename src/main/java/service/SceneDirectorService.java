@@ -130,7 +130,6 @@ public class SceneDirectorService {
         System.exit(0);
     }
 
-    // TODO: Both SceneDirectorService and GameStateService have width & height information. Do something about this.
     public int getSceneWidth() {
         return this.sceneWidth;
     }

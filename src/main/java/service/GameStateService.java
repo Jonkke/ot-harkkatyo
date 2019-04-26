@@ -44,8 +44,8 @@ public class GameStateService {
     private List<GameObject> gameObjectList;
 
     // Game area dimensions
-    private int canvasWidth;
-    private int canvasHeight;
+    private int xBounds;
+    private int yBounds;
 
     // Game status
     private int lostBallCount;
@@ -58,8 +58,8 @@ public class GameStateService {
 
     public GameStateService(int width, int height) {
         this.activePlayer = new Player(1, "default");
-        this.canvasWidth = width;
-        this.canvasHeight = height;
+        this.xBounds = width;
+        this.yBounds = height;
         this.gameActive = false;
     }
 
@@ -76,7 +76,7 @@ public class GameStateService {
      */
     public void initNewGame() {
         this.ball = new Ball(500, 300, 7);
-        this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 10);
+        this.paddle = new Paddle(xBounds / 2, yBounds - 15, 150, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
@@ -103,7 +103,7 @@ public class GameStateService {
 
     public void update() {
         for (GameObject obj : gameObjectList) {
-            obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, this.activeKeys, this.mouseVector);
+            obj.update(this.xBounds, this.yBounds, gameObjectList, this.activeKeys, this.mouseVector);
         }
         this.gameObjectList.forEach(ob -> {
             if (ob instanceof Brick && ob.markedForDestruction()) {
@@ -124,9 +124,9 @@ public class GameStateService {
     }
 
     public void draw(GraphicsContext gc) {
-        gc.clearRect(0, 0, canvasWidth, canvasHeight);
+        gc.clearRect(0, 0, xBounds, yBounds);
         gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvasWidth, canvasHeight);
+        gc.fillRect(0, 0, xBounds, yBounds);
 
         for (GameObject obj : gameObjectList) {
             obj.draw(gc);
@@ -152,11 +152,11 @@ public class GameStateService {
     }
 
     public int getCanvasWidth() {
-        return this.canvasWidth;
+        return this.xBounds;
     }
 
     public int getCanvasHeight() {
-        return this.canvasHeight;
+        return this.yBounds;
     }
 
     public List<GameObject> buildBrickArray(int columns, int rows, int gapSize) {
@@ -164,11 +164,11 @@ public class GameStateService {
         if (columns < 1 || rows < 1) {
             return brickArray;
         }
-        int brickWidth = (int) (this.canvasWidth * 0.7 - gapSize * (columns - 1)) / columns;
-        int brickHeight = (int) (this.canvasHeight * 0.2 - gapSize * (rows - 1)) / rows;
-        int posXBase = (int) (this.canvasWidth * 0.150) + (int) (brickWidth / 2);
+        int brickWidth = (int) (this.xBounds * 0.7 - gapSize * (columns - 1)) / columns;
+        int brickHeight = (int) (this.yBounds * 0.2 - gapSize * (rows - 1)) / rows;
+        int posXBase = (int) (this.xBounds * 0.150) + (int) (brickWidth / 2);
         int posX = posXBase;
-        int posY = (int) (this.canvasHeight * 0.1);
+        int posY = (int) (this.yBounds * 0.1);
         for (int y = 0; y < rows; y++) {
             Color color
                     = y == 0 || y == 1 ? Color.YELLOW

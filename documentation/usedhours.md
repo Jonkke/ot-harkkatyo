@@ -11,4 +11,5 @@
 |19.4| 4  | Improved collision checks, they now work more or less as they are expected to |
 |20.4| 5  | More tweaks to physics, added score counting, added ball direction with paddle, among other things |
 |24.4| 8 | Began implementing database, Dao classes and player & score scenes, among other things |
-| Total | 46   | |
+|26.4| 5 | Lots of refactoring, add (working) support for keys, tweaks here and there, documentation and minor test imporovements |
+| Total | 51   | |

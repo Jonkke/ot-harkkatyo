@@ -18,6 +18,9 @@ import service.SceneDirectorService;
 import service.GameStateService;
 
 /**
+ * This class represents the scene where the actual gameplay happens. It is
+ * responsible for creating and maintaing the state of the game loop, which is
+ * implemented using JavaFX's AnimationTimer class.
  *
  * @author Jonkke
  */
@@ -51,7 +54,7 @@ public class GameScene extends BaseScene {
             accumulatedTime += timeLast;
             timeLastFrame = timeNow;
             GraphicsContext gc = canvas.getGraphicsContext2D();
-            
+
             // TODO: Implement a cleaner way to change BG color
             gc.clearRect(0, 0, canvasWidth, canvasHeight);
             gc.setFill(Color.BLACK);
@@ -83,10 +86,16 @@ public class GameScene extends BaseScene {
         return this.root;
     }
 
+    /**
+     * Calling this method will start the game loop contained within this scene.
+     */
     public void start() {
         this.loop.start();
     }
 
+    /**
+     * Calling this method will stop the game loop contained within this scene.
+     */
     public void stop() {
         this.loop.stop();
     }

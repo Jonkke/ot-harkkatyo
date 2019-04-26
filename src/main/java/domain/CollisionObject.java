@@ -13,7 +13,7 @@ package domain;
  * The shape that a collision object represents is dictated by the constructor
  * that was used to create a collision object.
  *
- * All collision checks are isolated to this class.
+ * Collision checks are isolated to this class.
  *
  * @author Jonkke
  */
@@ -59,12 +59,15 @@ public class CollisionObject {
     }
 
     /**
-     * This method returns the side that was hit in another object. It is assumed
-     * that a collision event has been confirmed with the checkCollision() beforehand
+     * This method returns the side that was hit in another object. It is
+     * assumed that a collision event has been confirmed with the
+     * checkCollision() beforehand
+     *
      * @param cobj the object we are colliding with
-     * @return the side in the other object we hit, 0=top, 1=right, 2=bottom, 3=left
+     * @return the side in the other object we hit, 0=top, 1=right, 2=bottom,
+     * 3=left
      */
-    public int whichSideHit(CollisionObject cobj) {
+    public int getSideHit(CollisionObject cobj) {
         double thisLeftX;
         double thisRightX;
         double thisTopY;
@@ -92,10 +95,6 @@ public class CollisionObject {
         double rc = otherRightX - thisLeftX;
         double lc = thisRightX - otherLeftX;
 
-//        int tc = this.getHostY() - cobj.getHostY();
-//        int bc = cobj.getHostY() - this.getHostY();
-//        int rc = cobj.getHostX() - this.getHostX();
-//        int lc = this.getHostX() - cobj.getHostX();
         if (tc < bc && tc < rc && tc < lc) {
             return 0;
         } else if (bc < tc && bc < rc && bc < lc) {

@@ -31,50 +31,20 @@ public class Ball extends GameObject {
             if (gameObj == this || gameObj == null || gameObj.colObj == null) {
                 continue;
             }
-
             if (this.colObj.checkCollision(gameObj.colObj)) {
                 if (gameObj instanceof Ball) {
-                    double yMem = this.velocityY;
-                    double xMem = this.velocityX;
-                    this.velocityX = ((Ball) gameObj).velocityX;
-                    this.velocityY = ((Ball) gameObj).velocityY;
-                    ((Ball) gameObj).velocityX = xMem;
-                    ((Ball) gameObj).velocityY = yMem;
-                } else if (gameObj instanceof Brick || gameObj instanceof Paddle) {
-                    gameObj.setWasHitBy(this);
-                    int side = this.colObj.whichSideHit(gameObj.colObj);  // Get the side/direction we hit the object to
-                    int gameObjWidth;
-                    int gameObjHeight;
-                    gameObjWidth = gameObj instanceof Brick ? ((Brick) gameObj).getWidth() : ((Paddle) gameObj).getWidth();
-                    gameObjHeight = gameObj instanceof Brick ? ((Brick) gameObj).getHeight() : ((Paddle) gameObj).getHeight();
-
-                    // Here the ball gets pushed outside of the colliding object, to the opposite direction of the hit
-                    if (side == 0) {
-                        this.setY(gameObj.getY() - gameObjHeight / 2 - this.radius - 1);
-
-                        // When hitting the paddle, redirect the ball according to the part of paddle that was hit
-                        if (gameObj instanceof Paddle) {
-                            double newAngleFactor = (this.x - (gameObj.x - ((Paddle) gameObj).getWidth() / 2)) / ((Paddle) gameObj).getWidth();
-                            newAngleFactor = Math.max(0, Math.min(1, newAngleFactor));
-                            double newAngle = 45 + (1 - newAngleFactor) * 90;
-                            this.setHeading(newAngle);
-                        } else {
-                            this.velocityY = -this.velocityY;
-                        }
-                    } else if (side == 2) {
-                        this.setY(gameObj.getY() + gameObjHeight / 2 + this.radius + 1);
-                        this.velocityY = -this.velocityY;
-                    } else if (side == 1) {
-                        this.setX(gameObj.getX() + gameObjWidth / 2 + this.radius + 1);
-                        this.velocityX = -this.velocityX;
-                    } else {
-                        this.setX(gameObj.getX() - gameObjWidth / 2 - this.radius - 1);
-                        this.velocityX = -this.velocityX;
-                    }
+                    respondToBallCollision((Ball) gameObj);
+                } else if (gameObj instanceof Brick) {
+                    respondToBrickCollision((Brick) gameObj);
+                } else if (gameObj instanceof Paddle) {
+                    respondToPaddleCollision((Paddle) gameObj);
                 }
             }
         }
+        respondToBoundsCollision(xBounds, yBounds);
+    }
 
+    private void respondToBoundsCollision(int xBounds, int yBounds) {
         if (this.colObj.checkXBoundsCollision(xBounds)) {
             this.velocityX = -this.velocityX;
         }
@@ -85,11 +55,18 @@ public class Ball extends GameObject {
                 this.velocityY = -this.velocityY;
             }
         }
-        
+
         this.x += this.velocityX;
         this.y += this.velocityY;
 
-        // Enforce the ball to always stay inside of the bounds
+        enforceBallInsideGameArea(xBounds, yBounds);
+
+        if (this.y - this.radius > yBounds) {
+            this.markForDestruction();
+        }
+    }
+
+    private void enforceBallInsideGameArea(int xBounds, int yBounds) {
         if (this.x + this.radius > xBounds) {
             this.x = xBounds - this.radius;
         }
@@ -102,10 +79,70 @@ public class Ball extends GameObject {
         if (this.y - this.radius < 0) {
             this.y = this.radius;
         }
+    }
 
-        // If ball traveled past the upper Y bounds (=bottom), mark it for destruction
-        if (this.y - this.radius > yBounds) {
-            this.markForDestruction();
+    private void respondToBallCollision(Ball ball) {
+        double yMem = this.velocityY;
+        double xMem = this.velocityX;
+        this.velocityX = ball.velocityX;
+        this.velocityY = ball.velocityY;
+        ball.velocityX = xMem;
+        ball.velocityY = yMem;
+    }
+
+    private void respondToBrickCollision(Brick brick) {
+        brick.setWasHitBy(this);
+        int side = this.colObj.getSideHit(brick.colObj);
+        int brickWidth = brick.getWidth();
+        int brickHeight = brick.getHeight();
+
+        switch (side) {
+            case 0:
+                this.setY(brick.getY() - brickHeight / 2 - this.radius - 1);
+                this.velocityY = -this.velocityY;
+                break;
+            case 2:
+                this.setY(brick.getY() + brickHeight / 2 + this.radius + 1);
+                this.velocityY = -this.velocityY;
+                break;
+            case 1:
+                this.setX(brick.getX() + brickWidth / 2 + this.radius + 1);
+                this.velocityX = -this.velocityX;
+                break;
+            default:
+                this.setX(brick.getX() - brickWidth / 2 - this.radius - 1);
+                this.velocityX = -this.velocityX;
+                break;
+        }
+    }
+
+    private void respondToPaddleCollision(Paddle paddle) {
+        paddle.setWasHitBy(this);
+        int side = this.colObj.getSideHit(paddle.colObj);
+        int paddleWidth = paddle.getWidth();
+        int paddleHeight = paddle.getHeight();
+
+        switch (side) {
+            case 0:
+                this.setY(paddle.getY() - paddleHeight / 2 - this.radius - 1);
+                // When hitting the paddle, redirect the ball according to the part of paddle that was hit
+                double newAngleFactor = (this.x - (paddle.x - paddle.getWidth() / 2)) / paddle.getWidth();
+                newAngleFactor = Math.max(0, Math.min(1, newAngleFactor));
+                double newAngle = 45 + (1 - newAngleFactor) * 90;
+                this.setHeading(newAngle);
+                break;
+            case 2:
+                this.setY(paddle.getY() + paddleHeight / 2 + this.radius + 1);
+                this.velocityY = -this.velocityY;
+                break;
+            case 1:
+                this.setX(paddle.getX() + paddleWidth / 2 + this.radius + 1);
+                this.velocityX = -this.velocityX;
+                break;
+            default:
+                this.setX(paddle.getX() - paddleWidth / 2 - this.radius - 1);
+                this.velocityX = -this.velocityX;
+                break;
         }
     }
 

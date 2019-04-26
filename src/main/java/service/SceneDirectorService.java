@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.Cursor;
 import scene.GameScene;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import scene.BaseScene;
 import scene.MenuScene;
@@ -27,8 +28,8 @@ public class SceneDirectorService {
     private int sceneWidth;
     private int sceneHeight;
 
-    private DatabaseService dbs;
-    private GameStateService gss;
+    private DatabaseService databaseService;
+    private GameStateService gameStateService;
     private Scene scene;
     private BaseScene activeScene;
     private GameScene gameScene;
@@ -39,13 +40,13 @@ public class SceneDirectorService {
     public SceneDirectorService() {
         this.sceneWidth = 1024;
         this.sceneHeight = 768;
-        this.dbs = new DatabaseService();
-        this.dbs.connect();
-        this.gss = new GameStateService(sceneWidth, sceneHeight);
-        this.gameScene = new GameScene(this, this.gss);
-        this.menuScene = new MenuScene(this, this.gss);
-        this.playerScene = new PlayerScene(this, this.gss, this.dbs);
-        this.settingsScene = new SettingsScene(this, this.gss);
+        this.databaseService = new DatabaseService();
+        this.databaseService.connect();
+        this.gameStateService = new GameStateService(sceneWidth, sceneHeight);
+        this.gameScene = new GameScene(this, this.gameStateService);
+        this.menuScene = new MenuScene(this, this.gameStateService);
+        this.playerScene = new PlayerScene(this, this.gameStateService, this.databaseService);
+        this.settingsScene = new SettingsScene(this, this.gameStateService);
         this.scene = new Scene(this.gameScene.getRoot());
     }
 
@@ -53,7 +54,9 @@ public class SceneDirectorService {
         this.scene.setRoot(this.gameScene.getRoot());
         this.scene.setCursor(Cursor.NONE);
         this.activeScene = gameScene;
-        this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gss);
+        this.scene.addEventHandler(MouseEvent.MOUSE_MOVED, this.gameStateService);
+//        this.scene.addEventHandler(KeyEvent.KEY_PRESSED, this.gameStateService);
+        this.gameStateService.initNewGame();
         this.gameScene.start();
     }
 

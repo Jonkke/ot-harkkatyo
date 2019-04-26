@@ -26,9 +26,9 @@ import service.GameStateService;
 import service.SceneDirectorService;
 
 /**
- * This class represents the scene view where a player profile can be chosen from
- * existing ones, or new one created.
- * 
+ * This class represents the scene view where a player profile can be chosen
+ * from existing ones, or new one created.
+ *
  * @author Jonkke
  */
 public class PlayerScene extends BaseScene {  // TODO: This whole thing could use some serious cleanup...
@@ -50,15 +50,16 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         this.root.setAlignment(Pos.CENTER);
         addPlayerMenuItems(this.root);
     }
-    
+
     private void updateListNames() {
         this.playerNames = FXCollections.observableArrayList(this.playerList.stream().map(p -> p.getName()).collect(Collectors.toList()));
     }
 
+    // TODO: This one's a mess, clean it up
     private void addPlayerMenuItems(VBox root) {
         Label selectedPlayerLabel = new Label();
         selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());
-        
+
         updateListNames();
         final ListView<String> namesList = new ListView(playerNames);
         namesList.setPrefWidth(300);

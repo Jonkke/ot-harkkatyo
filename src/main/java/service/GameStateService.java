@@ -62,8 +62,14 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
 
         this.canvasWidth = width;
         this.canvasHeight = height;
+    }
+
+    /**
+     * This method initializes a new game.
+     */
+    public void initNewGame() {
         this.ball = new Ball(500, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
-        this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 80, 10);
+        this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
@@ -77,6 +83,10 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         this.ball.setVelocity(ballSpeed);
 
         this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
+    }
+    
+    private void endGame() {
+        
     }
 
     public void update() {

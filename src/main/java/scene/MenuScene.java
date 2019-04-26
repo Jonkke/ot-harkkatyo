@@ -16,7 +16,9 @@ import service.GameStateService;
 import service.SceneDirectorService;
 
 /**
- *
+ * This class represents the main menu scene. This is the first scene shown
+ * to the user when they launch the app.
+ * 
  * @author Jonkke
  */
 public class MenuScene extends BaseScene {

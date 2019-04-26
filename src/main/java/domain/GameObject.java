@@ -6,7 +6,9 @@
 package domain;
 
 import java.util.List;
+import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 
 /**
  * This abstract class represents a generic game object. All game objects are
@@ -44,10 +46,10 @@ public abstract class GameObject {
      * @param yBounds The horizontal upper bounds of the game area
      * @param gameObjectList List of other game objects (for collision checking
      * and other interaction)
-     * @param keyStates An array of currently pressed keys
-     * @param mouseStates An array of currently active mouse states
+     * @param activeKeys A Map of currently pressed keys
+     * @param mouseVector A list containg mouse X and Y coordinates, respectively
      */
-    abstract public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates);
+    abstract public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, Map<KeyCode, Boolean> activeKeys, List<Double> mouseVector);
 
     /**
      * The draw method is used to draw this game object on the GraphicsContext

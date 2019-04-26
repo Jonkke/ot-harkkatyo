@@ -11,11 +11,12 @@ import domain.GameObject;
 import domain.Paddle;
 import domain.Player;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -33,9 +34,10 @@ import javafx.scene.text.FontWeight;
  * @author Jonkke
  */
 // TODO: Clear up this EventHandler thingy...
-public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler<MouseEvent> {
+public class GameStateService {
 
     private Player activePlayer;
+    private boolean gameActive;
 
     // Game objects
     private Ball ball;
@@ -51,17 +53,23 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
     private int points;
     private double ballSpeed;
 
-    // Active keys
-    // This array contains the current states for all supported keys for the game
-    // 0=UP, 1=DOWN, 2=LEFT, 3=RIGHT, 5=HALT
-    private boolean[] keyStates = new boolean[5];
-    private double[] mouseStates = new double[2];
+    // Active keys & mouse position vector
+    Map<KeyCode, Boolean> activeKeys;
+    List<Double> mouseVector;
 
     public GameStateService(int width, int height) {
         this.activePlayer = new Player(1, "default");
-
         this.canvasWidth = width;
         this.canvasHeight = height;
+        this.gameActive = false;
+    }
+
+    public void setActiveKeys(Map<KeyCode, Boolean> activeKeys) {
+        this.activeKeys = activeKeys;
+    }
+
+    public void setMouseVector(List<Double> mouseVector) {
+        this.mouseVector = mouseVector;
     }
 
     /**
@@ -83,15 +91,20 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         this.ball.setVelocity(ballSpeed);
 
         this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
+        this.gameActive = true;
     }
-    
+
+    public boolean gameIsActive() {
+        return this.gameActive;
+    }
+
     private void endGame() {
-        
+
     }
 
     public void update() {
         for (GameObject obj : gameObjectList) {
-            obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, keyStates, mouseStates);
+            obj.update(this.canvasWidth, this.canvasHeight, gameObjectList, this.activeKeys, this.mouseVector);
         }
         this.gameObjectList.forEach(ob -> {
             if (ob instanceof Brick && ob.markedForDestruction()) {
@@ -108,10 +121,14 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
 
             this.lostBallCount++;
         }
-        this.keyStates = new boolean[5]; // Reset keys after each update loop, since we may update several times during one frame
+        this.activeKeys = new HashMap(); // Reset keys after each update loop, since we may update several times during one frame
     }
 
     public void draw(GraphicsContext gc) {
+        gc.clearRect(0, 0, canvasWidth, canvasHeight);
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvasWidth, canvasHeight);
+
         for (GameObject obj : gameObjectList) {
             obj.draw(gc);
         }
@@ -122,14 +139,6 @@ public class GameStateService implements /*EventHandler<KeyEvent>*/ EventHandler
         gc.fillText("Score: " + this.points, 10, 55);
         gc.fillText("time: ", 10, 70);
 
-    }
-
-    @Override
-    public void handle(MouseEvent event) {
-        if (event.getEventType() == MouseEvent.MOUSE_MOVED) {
-            this.mouseStates[0] = event.getX();
-            this.mouseStates[1] = event.getY();
-        }
     }
 
     public List<GameObject> getGameObjectList() {

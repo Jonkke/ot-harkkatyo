@@ -6,7 +6,10 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javafx.scene.input.KeyCode;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +19,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author jonask
+ * @author Jonkke
  */
 public class PaddleTest {
 
@@ -52,19 +55,22 @@ public class PaddleTest {
     public void padddleBouncesBallBack() {
         ball.setVelocity(5);
         ball.setHeading(270);
-        boolean[] keyStates = {false, false, false, false, false};
-        double[] mouseStates = {250.4, 605.34};
+        Map<KeyCode, Boolean> activeKeys = new HashMap();
+        List<Double> mouseVector = new ArrayList();
+        mouseVector.add(0, 0.0);
         for (int i = 0; i < 5; i++) {
-            gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, keyStates, mouseStates));
+            gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, activeKeys, mouseVector));
         }
         assertEquals(-5, ball.getVelocityY(), 0.1);
     }
 
     @Test
     public void paddleMovesToMouseXPosition() {
-        boolean[] keyStates = {false, false, false, false, false};
-        double[] mouseStates = {250.4, 605.34};
-        gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, keyStates, mouseStates));
-        assertEquals((int) mouseStates[0], paddle.getX(), 0.1);
+        Map<KeyCode, Boolean> activeKeys = new HashMap();
+        List<Double> mouseVector = new ArrayList();
+        mouseVector.add(0, 250.4);
+        mouseVector.add(1, 605.34);
+        gameObjectList.forEach(go -> go.update(1000, 1000, gameObjectList, activeKeys, mouseVector));
+        assertEquals(mouseVector.get(0), paddle.getX(), 0.1);
     }
 }

@@ -6,7 +6,9 @@
 package domain;
 
 import java.util.List;
+import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 /**
@@ -32,7 +34,7 @@ public class Brick extends GameObject {
     }
 
     @Override
-    public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates) {
+    public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, Map<KeyCode, Boolean> activeKeys, List<Double> mouseVector) {
         if (this.wasHitBy instanceof Ball) {
             this.health--;
             this.wasHitBy = null;

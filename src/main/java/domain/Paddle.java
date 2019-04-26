@@ -6,7 +6,9 @@
 package domain;
 
 import java.util.List;
+import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 /**
@@ -36,17 +38,17 @@ public class Paddle extends GameObject {
     }
 
     @Override
-    public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, boolean[] keyStates, double[] mouseStates) {
-        this.x = (int) mouseStates[0];
+    public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, Map<KeyCode, Boolean> activeKeys, List<Double> mouseVector) {
+        this.x = mouseVector.get(0);
         if (this.x < this.width / 2) {
             this.x = this.width / 2;
         }
         if (this.x > xBounds - this.width / 2) {
             this.x = xBounds - this.width / 2;
         }
-        if (keyStates[2]) {
+        if (activeKeys.getOrDefault(KeyCode.LEFT, false)) {
             this.x -= this.moveSpeed;
-        } else if (keyStates[3]) {
+        } else if (activeKeys.getOrDefault(KeyCode.RIGHT, false)) {
             this.x += this.moveSpeed;
         }
     }

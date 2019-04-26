@@ -13,7 +13,6 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import service.SceneDirectorService;
 import service.GameStateService;
 
@@ -26,15 +25,17 @@ import service.GameStateService;
  */
 public class GameScene extends BaseScene {
 
-    private GameStateService gss;
+    private GameStateService gameStateService;
     private int canvasWidth;
     private int canvasHeight;
     private Canvas canvas;
     private Group root;
+    
+    private long timeLastFrame;
 
     public GameScene(SceneDirectorService sds, GameStateService gss) {
         super(sds);
-        this.gss = gss;
+        this.gameStateService = gss;
         this.canvasWidth = gss.getCanvasWidth();
         this.canvasHeight = gss.getCanvasHeight();
         this.root = new Group();
@@ -45,7 +46,6 @@ public class GameScene extends BaseScene {
     AnimationTimer loop = new AnimationTimer() {
         private int fpsCap = 120;
         private int fixedDTns = 5 * 1000000;
-        private long timeLastFrame = System.nanoTime();
         private long accumulatedTime = 0;
 
         public void handle(long timeNow) {
@@ -55,16 +55,11 @@ public class GameScene extends BaseScene {
             timeLastFrame = timeNow;
             GraphicsContext gc = canvas.getGraphicsContext2D();
 
-            // TODO: Implement a cleaner way to change BG color
-            gc.clearRect(0, 0, canvasWidth, canvasHeight);
-            gc.setFill(Color.BLACK);
-            gc.fillRect(0, 0, canvasWidth, canvasHeight);
-
             while (accumulatedTime >= fixedDTns) {
-                gss.update();
+                gameStateService.update();
                 accumulatedTime -= fixedDTns;
             }
-            gss.draw(gc);
+            gameStateService.draw(gc);
 
             // Sort of dirty hack to cap FPS to 60. JavaFX's AnimationTimer *should* cap it automatically,
             // but it seems that on some systems (Ubuntu that I'm running for instance) the throttling does
@@ -90,6 +85,7 @@ public class GameScene extends BaseScene {
      * Calling this method will start the game loop contained within this scene.
      */
     public void start() {
+        this.timeLastFrame = System.nanoTime();
         this.loop.start();
     }
 

@@ -33,7 +33,6 @@ import javafx.scene.text.FontWeight;
  *
  * @author Jonkke
  */
-// TODO: Clear up this EventHandler thingy...
 public class GameStateService {
 
     private Player activePlayer;
@@ -76,7 +75,7 @@ public class GameStateService {
      * This method initializes a new game.
      */
     public void initNewGame() {
-        this.ball = new Ball(500, 200, 7);  // TODO: Randomize ball spawning position & direction, new balls too
+        this.ball = new Ball(500, 300, 7);
         this.paddle = new Paddle(canvasWidth / 2, canvasHeight - 15, 150, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(ball);
@@ -138,7 +137,6 @@ public class GameStateService {
         gc.fillText("Lost balls: " + this.lostBallCount, 10, 40);
         gc.fillText("Score: " + this.points, 10, 55);
         gc.fillText("time: ", 10, 70);
-
     }
 
     public List<GameObject> getGameObjectList() {

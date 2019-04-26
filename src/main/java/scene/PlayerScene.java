@@ -55,7 +55,6 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         this.playerNames = FXCollections.observableArrayList(this.playerList.stream().map(p -> p.getName()).collect(Collectors.toList()));
     }
 
-    // TODO: This one's a mess, clean it up
     private void addPlayerMenuItems(VBox root) {
         Label selectedPlayerLabel = new Label();
         selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());

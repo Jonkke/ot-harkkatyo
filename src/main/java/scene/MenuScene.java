@@ -5,12 +5,11 @@
  */
 package scene;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import service.GameStateService;
 import service.SceneDirectorService;
@@ -30,6 +29,10 @@ public class MenuScene extends BaseScene {
     public MenuScene(SceneDirectorService sceneDirectorService, GameStateService gameStateService) {
         super(sceneDirectorService);
         this.gameStateService = gameStateService;
+        buildMenu();
+    }
+
+    public void buildMenu() {
         this.root = new VBox(10);
         this.root.setMinSize(sceneDirectorService.getSceneWidth(), sceneDirectorService.getSceneHeight());
         this.root.setAlignment(Pos.CENTER);
@@ -37,9 +40,20 @@ public class MenuScene extends BaseScene {
     }
 
     private void addMenuItems(VBox root) {
+        Label selectedPlayerLabel = new Label();
+        selectedPlayerLabel.setText("Currently selected player: " + this.gameStateService.getActivePlayer().getName());
+
+        Button continueGameBtn = new Button();
+        continueGameBtn.setText("Continue");
+        continueGameBtn.setOnAction(event -> {
+            sceneDirectorService.setGameScene();
+        });
+
         Button newGameBtn = new Button();
         newGameBtn.setText("New game");
         newGameBtn.setOnAction(event -> {
+            gameStateService.initNewGame();
+            gameStateService.runGame();
             sceneDirectorService.setGameScene();
         });
 
@@ -70,6 +84,10 @@ public class MenuScene extends BaseScene {
             sceneDirectorService.exitGame();
         });
 
+        root.getChildren().add(selectedPlayerLabel);
+        if (this.gameStateService.gameIsActive()) {
+            root.getChildren().add(continueGameBtn);
+        }
         root.getChildren().add(newGameBtn);
         root.getChildren().add(playerMenuBtn);
         root.getChildren().add(highscoreMenuBtn);

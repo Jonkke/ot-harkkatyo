@@ -10,8 +10,16 @@ import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 
 /**
+ * This class represents a brick object. Bricks are static, destructible game
+ * objects that have a health property and a value property. Health determines
+ * how many hits it takes to destroy this brick, value dictates how many points
+ * will be awarded for destroying this brick.
  *
  * @author Jonkke
  */
@@ -46,7 +54,8 @@ public class Brick extends GameObject {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(this.color);
+        RadialGradient rg = new RadialGradient(0, .1, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE, new Stop(0, this.color), new Stop(1, this.color.darker().darker()));
+        gc.setFill(rg);
         gc.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     }
 
@@ -61,7 +70,7 @@ public class Brick extends GameObject {
     public int getWidth() {
         return this.width;
     }
-    
+
     public int getValue() {
         return this.value;
     }

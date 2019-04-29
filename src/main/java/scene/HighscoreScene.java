@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -30,13 +32,14 @@ import util.Utils;
  * @author Jonkke
  */
 public class HighscoreScene extends BaseScene {
-
+    
     private DatabaseService databaseService;
     private VBox root;
-
+    private ListView highScoreList;
+    
     private Map<Integer, String> playerIdNames;
     private List<Score> topScores;
-
+    
     public HighscoreScene(SceneDirectorService sceneDirectorService, DatabaseService databaseService) {
         super(sceneDirectorService);
         this.databaseService = databaseService;
@@ -47,7 +50,22 @@ public class HighscoreScene extends BaseScene {
         this.topScores = getSortedTopScores();
         addHighscoreMenuItems(this.root);
     }
-
+    
+    public void updateHighscoreMenuItems() {
+        this.playerIdNames = mapPlayerIdsToNames();
+        this.topScores = getSortedTopScores();
+        updateHighscoreList();
+    }
+    
+    private void updateHighscoreList() {
+        ObservableList<String> newItems = FXCollections.observableArrayList();
+        newItems.add("Points      Time      Date      Player");
+        this.topScores.forEach(score -> {
+            newItems.add(score.getPoints() + "      " + Utils.getFormattedTime(score.getScoreTime()) + "    " + score.getScoreDate() + "    " + playerIdNames.getOrDefault(score.getPlayerId(), ""));
+        });
+        this.highScoreList.setItems(newItems);
+    }
+    
     private Map<Integer, String> mapPlayerIdsToNames() {
         PlayerDao pd = new PlayerDao(this.databaseService);
         List<Player> players = pd.getAll();
@@ -57,7 +75,7 @@ public class HighscoreScene extends BaseScene {
         });
         return mappedIdNames;
     }
-
+    
     private List<Score> getSortedTopScores() {
         ScoreDao sd = new ScoreDao(this.databaseService);
         List<Score> scores = sd.getAll();
@@ -65,31 +83,27 @@ public class HighscoreScene extends BaseScene {
             return s2.getPoints() - s1.getPoints();
         }).collect(Collectors.toList());
     }
-
+    
     private void addHighscoreMenuItems(VBox root) {
         Label testLabel = new Label();
         testLabel.setText("High score");
-
-        ListView highScoreList = new ListView();
-        highScoreList.getItems().add("Points      Time      Date      Player");
-        this.topScores.forEach(score -> {
-            highScoreList.getItems().add(score.getPoints() + "      " + Utils.getFormattedTime(score.getScoreTime()) + "    " + score.getScoreDate() + "    " + playerIdNames.getOrDefault(score.getPlayerId(), ""));
-        });
-
+        this.highScoreList = new ListView();
+        updateHighscoreList();
+        
         Button backBtn = new Button();
         backBtn.setText("Back to main menu");
         backBtn.setOnAction(event -> {
             sceneDirectorService.setMenuScene();
         });
-
+        
         root.getChildren().add(testLabel);
-        root.getChildren().add(highScoreList);
+        root.getChildren().add(this.highScoreList);
         root.getChildren().add(backBtn);
     }
-
+    
     @Override
     public Parent getRoot() {
         return this.root;
     }
-
+    
 }

@@ -10,6 +10,9 @@ import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 /**
  *
@@ -55,7 +58,9 @@ public class Paddle extends GameObject {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.RED);
+        Stop[] stops = new Stop[]{new Stop(0, Color.BLUEVIOLET), new Stop(1, Color.DARKBLUE), new Stop(2, Color.BLUEVIOLET)};
+        LinearGradient lg = new LinearGradient(0, 0, 0.5, 0, true, CycleMethod.REFLECT, stops);
+        gc.setFill(lg);
         gc.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     }
 
@@ -66,7 +71,7 @@ public class Paddle extends GameObject {
     public int getWidth() {
         return this.width;
     }
-    
+
     public void setWidth(int width) {
         this.width = width;
         this.colObj = new CollisionObject(this.width, this.height, this);

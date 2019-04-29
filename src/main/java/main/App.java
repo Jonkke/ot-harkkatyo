@@ -1,12 +1,7 @@
 package main;
 
-import dao.ScoreDao;
-import domain.Score;
-import java.util.Date;
-import java.util.List;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import service.DatabaseService;
 import service.SceneDirectorService;
 
 /**

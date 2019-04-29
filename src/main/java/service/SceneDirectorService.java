@@ -31,8 +31,8 @@ import scene.SettingsScene;
  */
 public class SceneDirectorService {
 
-    private int sceneWidth;
-    private int sceneHeight;
+    private int width;
+    private int height;
 
     private Map<KeyCode, Boolean> activeKeys;
     private List<Double> mouseVector;
@@ -49,12 +49,12 @@ public class SceneDirectorService {
 
     public SceneDirectorService() {
         // TODO: make game scalable to other resolutions
-        this.sceneWidth = 1024;
-        this.sceneHeight = 768;
+        this.width = 1024;
+        this.height = 768;
 
         this.databaseService = new DatabaseService();
         this.databaseService.connect();
-        this.gameStateService = new GameStateService(sceneWidth, sceneHeight, this.databaseService);
+        this.gameStateService = new GameStateService(width, height, this.databaseService);
         this.gameScene = new GameScene(this, this.gameStateService);
         this.gameStateService.setGameSceneRef(gameScene);
         this.menuScene = new MenuScene(this, this.gameStateService);
@@ -63,20 +63,28 @@ public class SceneDirectorService {
         this.settingsScene = new SettingsScene(this, this.gameStateService);
         this.scene = new Scene(this.gameScene.getRoot());
 
+        addKeyHandler();
+        addMouseHandler();
+    }
+
+    private void addKeyHandler() {
         this.activeKeys = new HashMap();
         this.gameStateService.setActiveKeys(activeKeys);
         this.scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (this.activeScene == gameScene && !this.gameStateService.gameIsActive()) {
+                this.menuScene.buildMenu();
                 this.setMenuScene();
             }
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (this.activeScene == gameScene) {
                     this.gameStateService.haltGame();
+                    this.menuScene.buildMenu();
                     this.setMenuScene();
                 } else if (this.activeScene == menuScene && this.gameStateService.gameIsActive()) {
                     this.setGameScene();
                     this.gameStateService.runGame();
                 } else {
+                    this.menuScene.buildMenu();
                     this.setMenuScene();
                 }
             }
@@ -84,7 +92,9 @@ public class SceneDirectorService {
             this.gameStateService.setActiveKeys(activeKeys);
             this.activeKeys = new HashMap();
         });
+    }
 
+    private void addMouseHandler() {
         this.mouseVector = new ArrayList();
         this.mouseVector.add(0.0);
         this.mouseVector.add(0.0);
@@ -95,6 +105,10 @@ public class SceneDirectorService {
         });
     }
 
+    /**
+     * Changes current scene to the game scene and calls the runGame() which
+     * will start the game.
+     */
     public void setGameScene() {
         this.scene.setRoot(this.gameScene.getRoot());
         this.scene.setCursor(Cursor.NONE);
@@ -105,50 +119,66 @@ public class SceneDirectorService {
         this.gameStateService.runGame();
     }
 
+    /**
+     * Changes current scene to the main menu scene.
+     */
     public void setMenuScene() {
         this.scene.setCursor(Cursor.DEFAULT);
         this.scene.setRoot(this.menuScene.getRoot());
         this.activeScene = this.menuScene;
     }
 
+    /**
+     * Changes current scene to the player selection and/or creation menu scene
+     */
     public void setPlayerMenuScene() {
         this.scene.setRoot(this.playerScene.getRoot());
         this.activeScene = this.playerScene;
     }
 
+    /**
+     * Changes current scene to the high score / leaderboard menu scene.
+     */
     public void setHighscoreMenuScene() {
         this.scene.setRoot(this.highscoreScene.getRoot());
+        this.highscoreScene.updateHighscoreMenuItems();
         this.activeScene = this.highscoreScene;
     }
 
+    /**
+     * Changes current scene to the settings menu scene.
+     */
     public void setSettingsMenuScene() {
         this.scene.setRoot(this.settingsScene.getRoot());
         this.activeScene = this.settingsScene;
     }
 
+    /**
+     * @return the Scene object of this SceneDirectorService instance
+     */
     public Scene getScene() {
         return this.scene;
     }
 
-    public void changeScene() {
-        if (activeScene == menuScene) {
-            setGameScene();
-        } else {
-            this.gameScene.stop();
-            setMenuScene();
-        }
-    }
-
+    /**
+     * Exits the game
+     */
     public void exitGame() {
         Platform.exit();
         System.exit(0);
     }
 
+    /**
+     * @return width of the containing scene object
+     */
     public int getSceneWidth() {
-        return this.sceneWidth;
+        return this.width;
     }
 
+    /**
+     * @return height of the containing scene object
+     */
     public int getSceneHeight() {
-        return this.sceneHeight;
+        return this.height;
     }
 }

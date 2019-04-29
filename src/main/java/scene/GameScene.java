@@ -30,14 +30,14 @@ public class GameScene extends BaseScene {
     private int canvasHeight;
     private Canvas canvas;
     private Group root;
-    
+
     private long timeLastFrame;
 
-    public GameScene(SceneDirectorService sds, GameStateService gss) {
-        super(sds);
-        this.gameStateService = gss;
-        this.canvasWidth = gss.getCanvasWidth();
-        this.canvasHeight = gss.getCanvasHeight();
+    public GameScene(SceneDirectorService sceneDirectorService, GameStateService gameStateService) {
+        super(sceneDirectorService);
+        this.gameStateService = gameStateService;
+        this.canvasWidth = sceneDirectorService.getSceneWidth();
+        this.canvasHeight = sceneDirectorService.getSceneHeight();
         this.root = new Group();
         this.canvas = new Canvas(canvasWidth, canvasHeight);
         root.getChildren().add(canvas);
@@ -83,6 +83,8 @@ public class GameScene extends BaseScene {
 
     /**
      * Calling this method will start the game loop contained within this scene.
+     * Will also reset the time from last time to current system time, to
+     * prevens skipping.
      */
     public void start() {
         this.timeLastFrame = System.nanoTime();

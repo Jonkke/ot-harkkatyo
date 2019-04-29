@@ -16,10 +16,10 @@ import service.SceneDirectorService;
  * @author Jonkke
  */
 public abstract class BaseScene {
-    SceneDirectorService sds;
+    SceneDirectorService sceneDirectorService;
     
     public BaseScene(SceneDirectorService sds) {
-        this.sds = sds;
+        this.sceneDirectorService = sds;
     }
     
     /**

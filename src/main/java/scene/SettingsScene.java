@@ -42,7 +42,7 @@ public class SettingsScene extends BaseScene {
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                sds.setMenuScene();
+                sceneDirectorService.setMenuScene();
             }
         });
         

@@ -66,5 +66,10 @@ public class Paddle extends GameObject {
     public int getWidth() {
         return this.width;
     }
+    
+    public void setWidth(int width) {
+        this.width = width;
+        this.colObj = new CollisionObject(this.width, this.height, this);
+    }
 
 }

@@ -47,7 +47,8 @@ public abstract class GameObject {
      * @param gameObjectList List of other game objects (for collision checking
      * and other interaction)
      * @param activeKeys A Map of currently pressed keys
-     * @param mouseVector A list containg mouse X and Y coordinates, respectively
+     * @param mouseVector A list containg mouse X and Y coordinates,
+     * respectively
      */
     abstract public void update(int xBounds, int yBounds, List<GameObject> gameObjectList, Map<KeyCode, Boolean> activeKeys, List<Double> mouseVector);
 
@@ -74,9 +75,9 @@ public abstract class GameObject {
     }
 
     /**
-     * Sets the angular heading for this object.
+     * Sets the heading for this object, in degrees.
      *
-     * @param headingAngleDegrees new heading angle for this object
+     * @param headingAngleDegrees new heading angle
      */
     public void setHeading(double headingAngleDegrees) {
         this.headingAngleDegrees = headingAngleDegrees;

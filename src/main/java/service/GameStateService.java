@@ -5,12 +5,15 @@
  */
 package service;
 
+import dao.ScoreDao;
 import domain.Ball;
 import domain.Brick;
 import domain.GameObject;
 import domain.Paddle;
 import domain.Player;
+import domain.Score;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +21,9 @@ import java.util.stream.Collectors;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
+import scene.GameScene;
+import util.CanvasUtils;
+import util.Utils;
 
 /**
  * This service holds all the information pertaining to a single game session,
@@ -35,8 +38,16 @@ import javafx.scene.text.FontWeight;
  */
 public class GameStateService {
 
+    // Link to game scene
+    private GameScene gameScene;
+
+    // Link to DatabaseService
+    private DatabaseService databaseService;
+
+    // Game properties
     private Player activePlayer;
     private boolean gameActive;
+    private boolean gameEnded;
 
     // Game objects
     private Ball ball;
@@ -48,15 +59,19 @@ public class GameStateService {
     private int yBounds;
 
     // Game status
-    private int lostBallCount;
+    private int ballCount;
     private int points;
     private double ballSpeed;
+    private long startTime;
+    private long runTime;
+    private boolean[] phases;
 
     // Active keys & mouse position vector
     Map<KeyCode, Boolean> activeKeys;
     List<Double> mouseVector;
 
-    public GameStateService(int width, int height) {
+    public GameStateService(int width, int height, DatabaseService databaseService) {
+        this.databaseService = databaseService;
         this.activePlayer = new Player(1, "default");
         this.xBounds = width;
         this.yBounds = height;
@@ -71,6 +86,10 @@ public class GameStateService {
         this.mouseVector = mouseVector;
     }
 
+    public void setGameSceneRef(GameScene gameScene) {
+        this.gameScene = gameScene;
+    }
+
     /**
      * This method initializes a new game.
      */
@@ -81,7 +100,7 @@ public class GameStateService {
         this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
 
-        this.lostBallCount = 0;
+        this.ballCount = 3;
         this.points = 0;
         this.ballSpeed = 2.2;
 
@@ -89,16 +108,89 @@ public class GameStateService {
         this.ball.setHeading(270);
         this.ball.setVelocity(ballSpeed);
 
-        this.gameObjectList.addAll(buildBrickArray(16, 8, 2));
+        this.gameObjectList.addAll(Utils.build16by8BrickArray(this.xBounds, this.yBounds, 2));
+
+        this.phases = new boolean[]{false, false, false, false};
         this.gameActive = true;
+        this.gameEnded = false;
+        this.startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Returns whether there is currently an active game session or not
+     *
+     * @return boolean value
+     */
     public boolean gameIsActive() {
         return this.gameActive;
     }
 
-    private void endGame() {
+    /**
+     * Starts the game
+     */
+    public void runGame() {
+        this.gameScene.start();
+    }
 
+    /**
+     * Temporarily halts the game, while keeping game state
+     */
+    public void haltGame() {
+        this.gameScene.stop();
+    }
+
+    /**
+     * Ends current game session.
+     *
+     * @param noSave if true, score will not be saved to highscore database
+     */
+    public void endGame(boolean noSave) {
+        if (!this.gameActive) {
+            return;
+        }
+        this.gameEnded = true;
+        this.gameActive = false;
+        this.haltGame();
+        if (!noSave) {
+            Score score = new Score(-1, this.points, new Date(), this.runTime, this.activePlayer.getId());
+            ScoreDao sd = new ScoreDao(this.databaseService);
+            sd.save(score);
+        }
+    }
+
+    /**
+     * Handles transitioning from one difficulty phase to the next. In harder
+     * phases, ball speed is increased and paddle width decreased.
+     */
+    private void handlePhases() {
+        if (this.points >= 80 && !this.phases[0]) {
+            this.phases[0] = true;
+        } else if (this.points >= 170 && !this.phases[1]) {
+            this.phases[1] = true;
+        } else if (this.points >= 300 && !this.phases[2]) {
+            this.phases[2] = true;
+        } else if (this.points >= 420 && !this.phases[3]) {
+            this.phases[3] = true;
+        } else {
+            return;
+        }
+        this.ballSpeed *= 1.3;
+        this.ball.setVelocity(ballSpeed);
+        this.paddle.setWidth((int) (this.paddle.getWidth() * 0.8));
+    }
+
+    /**
+     * If ball was destroyed, spawn new and reduce ballcount
+     */
+    private void handleLostBall() {
+        if (this.ball.markedForDestruction()) {
+            this.ball = new Ball(500, 300, 7);
+            this.ball.disableBottomCollision();
+            this.ball.setHeading(270);
+            this.ball.setVelocity(ballSpeed);
+            this.gameObjectList.add(this.ball);
+            this.ballCount--;
+        }
     }
 
     public void update() {
@@ -110,33 +202,26 @@ public class GameStateService {
                 this.points += ((Brick) ob).getValue();
             }
         });
+        this.runTime = System.currentTimeMillis() - this.startTime;
         this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
-        if (this.ball.markedForDestruction()) {
-            this.ball = new Ball(200, 200, 7);
-            this.ball.disableBottomCollision();
-            this.ball.setHeading(270);
-            this.ball.setVelocity(ballSpeed);
-            this.gameObjectList.add(this.ball);
-
-            this.lostBallCount++;
+        handleLostBall();
+        handlePhases();
+        if (this.gameObjectList.size() == 2 || this.ballCount <= 0) {
+            endGame(false);
         }
         this.activeKeys = new HashMap(); // Reset keys after each update loop, since we may update several times during one frame
     }
 
     public void draw(GraphicsContext gc) {
-        gc.clearRect(0, 0, xBounds, yBounds);
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, xBounds, yBounds);
-
+        CanvasUtils.fillCanvas(gc, Color.BLACK, this.xBounds, this.yBounds);
         for (GameObject obj : gameObjectList) {
             obj.draw(gc);
         }
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("monospace", FontWeight.LIGHT, FontPosture.REGULAR, 15));
-        gc.fillText("Player: " + this.activePlayer.getName(), 10, 25);
-        gc.fillText("Lost balls: " + this.lostBallCount, 10, 40);
-        gc.fillText("Score: " + this.points, 10, 55);
-        gc.fillText("time: ", 10, 70);
+        CanvasUtils.drawGameSceneInfo(gc, this.activePlayer, this.ballCount, this.points, this.runTime);
+
+        if (this.gameEnded) {
+            CanvasUtils.drawEndGamePopUp(gc, this.xBounds, this.yBounds, this.points, this.runTime);
+        }
     }
 
     public List<GameObject> getGameObjectList() {
@@ -157,35 +242,6 @@ public class GameStateService {
 
     public int getCanvasHeight() {
         return this.yBounds;
-    }
-
-    public List<GameObject> buildBrickArray(int columns, int rows, int gapSize) {
-        List<GameObject> brickArray = new ArrayList();
-        if (columns < 1 || rows < 1) {
-            return brickArray;
-        }
-        int brickWidth = (int) (this.xBounds * 0.7 - gapSize * (columns - 1)) / columns;
-        int brickHeight = (int) (this.yBounds * 0.2 - gapSize * (rows - 1)) / rows;
-        int posXBase = (int) (this.xBounds * 0.150) + (int) (brickWidth / 2);
-        int posX = posXBase;
-        int posY = (int) (this.yBounds * 0.1);
-        for (int y = 0; y < rows; y++) {
-            Color color
-                    = y == 0 || y == 1 ? Color.YELLOW
-                            : y == 2 || y == 3 ? Color.GREEN
-                                    : y == 4 || y == 5 ? Color.ORANGE
-                                            : Color.RED;
-            int value = y == 0 || y == 1 ? 7
-                    : y == 2 || y == 3 ? 5
-                            : y == 4 || y == 5 ? 3 : 1;
-            for (int x = 0; x < columns; x++) {
-                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, color, 1, value));
-                posX += brickWidth + gapSize;
-            }
-            posX = posXBase;
-            posY += brickHeight + gapSize;
-        }
-        return brickArray;
     }
 
 }

@@ -36,15 +36,15 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
     PlayerDao pd;
     List<Player> playerList;
 
-    private GameStateService gss;
+    private GameStateService gameStateService;
     private VBox root;
     private ObservableList<String> playerNames;
 
-    public PlayerScene(SceneDirectorService sds, GameStateService gss, DatabaseService dbs) {
+    public PlayerScene(SceneDirectorService sds, GameStateService gameStateService, DatabaseService dataBaseService) {
         super(sds);
-        this.pd = new PlayerDao(dbs);
+        this.pd = new PlayerDao(dataBaseService);
         this.playerList = this.pd.getAll();
-        this.gss = gss;
+        this.gameStateService = gameStateService;
         this.root = new VBox(10);
         this.root.setMinSize(sds.getSceneWidth(), sds.getSceneHeight());
         this.root.setAlignment(Pos.CENTER);
@@ -57,7 +57,7 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
 
     private void addPlayerMenuItems(VBox root) {
         Label selectedPlayerLabel = new Label();
-        selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());
+        selectedPlayerLabel.setText("Currently selected player: " + this.gameStateService.getActivePlayer().getName());
 
         updateListNames();
         final ListView<String> namesList = new ListView(playerNames);
@@ -80,7 +80,6 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
                     pd.save(new Player(-1, addPlayerTF.getText()));
                     playerList = pd.getAll();
                 }
-
             });
             t.start();
             namesList.getItems().add(addPlayerTF.getText());
@@ -98,8 +97,15 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         selectBtn.setText("Select player");
         selectBtn.setOnAction(event -> {
             int selectedIndex = namesList.getSelectionModel().getSelectedIndex();
-            this.gss.setActivePlayer(this.playerList.get(selectedIndex));
-            selectedPlayerLabel.setText("Currently selected player: " + this.gss.getActivePlayer().getName());
+            if (this.playerList.get(selectedIndex) == this.gameStateService.getActivePlayer()) {
+                return;
+            }
+            if (this.gameStateService.gameIsActive()) {
+                // TODO: add confirm dialog here
+                this.gameStateService.endGame(true);
+            }
+            this.gameStateService.setActivePlayer(this.playerList.get(selectedIndex));
+            selectedPlayerLabel.setText("Currently selected player: " + this.gameStateService.getActivePlayer().getName());
         });
         Button deleteBtn = new Button();
         deleteBtn.setText("Delete selected player");
@@ -108,8 +114,8 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
             if (i == 0) {
                 return; // Don't ever delete default player
             }
-            if (this.gss.getActivePlayer() == this.playerList.get(i)) {
-                this.gss.setActivePlayer(playerList.get(0));
+            if (this.gameStateService.getActivePlayer() == this.playerList.get(i)) {
+                this.gameStateService.setActivePlayer(playerList.get(0));
             }
             this.pd.delete(playerList.get(i));
             this.playerList = this.pd.getAll();
@@ -127,7 +133,7 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                sds.setMenuScene();
+                sceneDirectorService.setMenuScene();
             }
         });
 

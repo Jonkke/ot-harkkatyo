@@ -36,7 +36,7 @@ public class GameStateServiceTest {
     
     @Before
     public void setUp() {
-        gts = new GameStateService(500, 500);
+        gts = new GameStateService(500, 500, new DatabaseService());
         gameObjectList = gts.getGameObjectList();
     }
     

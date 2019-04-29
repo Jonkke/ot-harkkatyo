@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import scene.BaseScene;
+import scene.HighscoreScene;
 import scene.MenuScene;
 import scene.PlayerScene;
 import scene.SettingsScene;
@@ -43,30 +44,38 @@ public class SceneDirectorService {
     private GameScene gameScene;
     private MenuScene menuScene;
     private PlayerScene playerScene;
+    private HighscoreScene highscoreScene;
     private SettingsScene settingsScene;
 
     public SceneDirectorService() {
+        // TODO: make game scalable to other resolutions
         this.sceneWidth = 1024;
         this.sceneHeight = 768;
 
         this.databaseService = new DatabaseService();
         this.databaseService.connect();
-        this.gameStateService = new GameStateService(sceneWidth, sceneHeight);
+        this.gameStateService = new GameStateService(sceneWidth, sceneHeight, this.databaseService);
         this.gameScene = new GameScene(this, this.gameStateService);
+        this.gameStateService.setGameSceneRef(gameScene);
         this.menuScene = new MenuScene(this, this.gameStateService);
         this.playerScene = new PlayerScene(this, this.gameStateService, this.databaseService);
+        this.highscoreScene = new HighscoreScene(this, this.databaseService);
         this.settingsScene = new SettingsScene(this, this.gameStateService);
         this.scene = new Scene(this.gameScene.getRoot());
 
         this.activeKeys = new HashMap();
         this.gameStateService.setActiveKeys(activeKeys);
         this.scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (this.activeScene == gameScene && !this.gameStateService.gameIsActive()) {
+                this.setMenuScene();
+            }
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (this.activeScene == gameScene) {
-                    this.gameScene.stop();
+                    this.gameStateService.haltGame();
                     this.setMenuScene();
                 } else if (this.activeScene == menuScene && this.gameStateService.gameIsActive()) {
                     this.setGameScene();
+                    this.gameStateService.runGame();
                 } else {
                     this.setMenuScene();
                 }
@@ -93,7 +102,7 @@ public class SceneDirectorService {
         if (!this.gameStateService.gameIsActive()) {
             this.gameStateService.initNewGame();
         }
-        this.gameScene.start();
+        this.gameStateService.runGame();
     }
 
     public void setMenuScene() {
@@ -105,6 +114,11 @@ public class SceneDirectorService {
     public void setPlayerMenuScene() {
         this.scene.setRoot(this.playerScene.getRoot());
         this.activeScene = this.playerScene;
+    }
+
+    public void setHighscoreMenuScene() {
+        this.scene.setRoot(this.highscoreScene.getRoot());
+        this.activeScene = this.highscoreScene;
     }
 
     public void setSettingsMenuScene() {

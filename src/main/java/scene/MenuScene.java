@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import service.GameStateService;
 import service.SceneDirectorService;
+import util.Utils;
 
 /**
  * This class represents the main menu scene. This is the first scene shown to
@@ -68,22 +69,13 @@ public class MenuScene extends BaseScene {
         highscoreMenuBtn.setOnAction(event -> {
             this.sceneDirectorService.setHighscoreMenuScene();
         });
-
-        // TODO: Either remove settings menu or create it (resolution, mouse/keyboard maybe?)
-//        Button settingsMenuBtn = new Button();
-//        settingsMenuBtn.setText("Settings");
-//        settingsMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                sceneDirectorService.setSettingsMenuScene();
-//            }
-//        });
+        
         Button exitGameBtn = new Button();
         exitGameBtn.setText("Exit");
         exitGameBtn.setOnAction(event -> {
             sceneDirectorService.exitGame();
         });
-
+        
         root.getChildren().add(selectedPlayerLabel);
         if (this.gameStateService.gameIsActive()) {
             root.getChildren().add(continueGameBtn);
@@ -91,7 +83,6 @@ public class MenuScene extends BaseScene {
         root.getChildren().add(newGameBtn);
         root.getChildren().add(playerMenuBtn);
         root.getChildren().add(highscoreMenuBtn);
-//        root.getChildren().add(settingsMenuBtn);
         root.getChildren().add(exitGameBtn);
 
     }

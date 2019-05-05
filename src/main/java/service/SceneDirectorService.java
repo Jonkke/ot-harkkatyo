@@ -110,7 +110,6 @@ public class SceneDirectorService {
      * will start the game.
      */
     public void setGameScene() {
-        // TODO: Lock mouse inside window while game scene is running
         this.scene.setRoot(this.gameScene.getRoot());
         this.scene.setCursor(Cursor.NONE);
         this.activeScene = gameScene;
@@ -181,5 +180,12 @@ public class SceneDirectorService {
      */
     public int getSceneHeight() {
         return this.height;
+    }
+    
+    /**
+     * @return mouse position vector
+     */
+    public List<Double> getMouseVector() {
+        return this.mouseVector;
     }
 }

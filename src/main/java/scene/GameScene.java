@@ -15,6 +15,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import service.SceneDirectorService;
 import service.GameStateService;
+import util.Utils;
 
 /**
  * This class represents the scene where the actual gameplay happens. It is
@@ -54,7 +55,9 @@ public class GameScene extends BaseScene {
             accumulatedTime += timeLast;
             timeLastFrame = timeNow;
             GraphicsContext gc = canvas.getGraphicsContext2D();
-
+            
+            Utils.lockMouseInsideGameArea(root.getScene());
+            
             while (accumulatedTime >= fixedDTns) {
                 gameStateService.update(fixedDTns / 1000000);
                 accumulatedTime -= fixedDTns;

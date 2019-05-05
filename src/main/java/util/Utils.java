@@ -7,8 +7,13 @@ package util;
 
 import domain.Brick;
 import domain.GameObject;
+import java.awt.AWTException;
+import java.awt.MouseInfo;
+import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 
 /**
@@ -72,32 +77,39 @@ public class Utils {
         return brickArray;
     }
 
-//        public static List<GameObject> buildCustomBrickArray(int gameAreaWidth, int gameAreaHeight, int columns, int rows, int gapSize) {
-//        List<GameObject> brickArray = new ArrayList();
-//        if (columns < 1 || rows < 1) {
-//            return brickArray;
-//        }
-//        int brickWidth = (int) (gameAreaWidth * 0.7 - gapSize * (columns - 1)) / columns;
-//        int brickHeight = (int) (gameAreaHeight * 0.2 - gapSize * (rows - 1)) / rows;
-//        int posXBase = (int) (gameAreaWidth * 0.150) + (int) (brickWidth / 2);
-//        int posX = posXBase;
-//        int posY = (int) (gameAreaHeight * 0.1);
-//        for (int y = 0; y < rows; y++) {
-//            Color color
-//                    = y == 0 || y == 1 ? Color.YELLOW
-//                            : y == 2 || y == 3 ? Color.GREEN
-//                                    : y == 4 || y == 5 ? Color.ORANGE
-//                                            : Color.RED;
-//            int value = y == 0 || y == 1 ? 7
-//                    : y == 2 || y == 3 ? 5
-//                            : y == 4 || y == 5 ? 3 : 1;
-//            for (int x = 0; x < columns; x++) {
-//                brickArray.add(new Brick(posX, posY, brickWidth, brickHeight, color, 1, value));
-//                posX += brickWidth + gapSize;
-//            }
-//            posX = posXBase;
-//            posY += brickHeight + gapSize;
-//        }
-//        return brickArray;
-//    }
+    /**
+     * Resets the mouse position back inside the scene window bounds, if either
+     * of it's X or Y positions are outside them. This method can be used to
+     * "lock" the mouse inside game area, when called from within a running game
+     * loop.
+     *
+     * @param scene the Scene object whose bounds we should observe when
+     * determining whether to reset mouse or not
+     */
+    public static void lockMouseInsideGameArea(Scene scene) {
+        Platform.runLater(() -> {
+            try {
+                Robot r = new Robot();
+                int leftX = (int) scene.getWindow().getX() + 10;
+                int topY = (int) scene.getWindow().getY() + 35;
+                int rightX = (int) scene.getWidth() + leftX - 10;
+                int bottomY = (int) scene.getHeight() + topY - 10;
+
+                int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+                int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+
+                if (mouseX < leftX) {
+                    r.mouseMove(leftX, mouseY);
+                } else if (mouseX > rightX) {
+                    r.mouseMove(rightX, mouseY);
+                } else if (mouseY < topY) {
+                    r.mouseMove(mouseX, topY);
+                } else if (mouseY > bottomY) {
+                    r.mouseMove(mouseX, bottomY);
+                }
+            } catch (AWTException awte) {
+                awte.printStackTrace();
+            }
+        });
+    }
 }

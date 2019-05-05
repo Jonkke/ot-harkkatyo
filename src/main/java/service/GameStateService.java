@@ -203,6 +203,18 @@ public class GameStateService {
         }
     }
 
+    private void updateGameObjects() {
+        for (GameObject obj : gameObjectList) {
+            obj.update(this.xBounds, this.yBounds, gameObjectList, this.activeKeys, this.mouseVector);
+        }
+        this.gameObjectList.forEach(ob -> {
+            if (ob instanceof Brick && ob.markedForDestruction()) {
+                this.points += ((Brick) ob).getValue();
+            }
+        });
+        this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
+    }
+
     /**
      * Updates all game logic during a single update cycle iteration. This
      * includes variables pertaining to the current game session, such as
@@ -222,15 +234,7 @@ public class GameStateService {
         if (this.ball == null && this.ballCount > 0) {
             spawnNewBall();
         }
-        for (GameObject obj : gameObjectList) {
-            obj.update(this.xBounds, this.yBounds, gameObjectList, this.activeKeys, this.mouseVector);
-        }
-        this.gameObjectList.forEach(ob -> {
-            if (ob instanceof Brick && ob.markedForDestruction()) {
-                this.points += ((Brick) ob).getValue();
-            }
-        });
-        this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
+        updateGameObjects();
         handleLostBall();
         handlePhases();
         handleEndGameCheck();

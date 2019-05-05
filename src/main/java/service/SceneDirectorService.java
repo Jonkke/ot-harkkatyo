@@ -64,6 +64,20 @@ public class SceneDirectorService {
         addMouseHandler();
     }
 
+    private void handleEscapeKey() {
+        if (this.activeScene == gameScene) {
+            this.gameStateService.haltGame();
+            this.menuScene.buildMenu();
+            this.setMenuScene();
+        } else if (this.activeScene == menuScene && this.gameStateService.gameIsActive()) {
+            this.setGameScene();
+            this.gameStateService.runGame();
+        } else {
+            this.menuScene.buildMenu();
+            this.setMenuScene();
+        }
+    }
+
     private void addKeyHandler() {
         this.activeKeys = new HashMap();
         this.gameStateService.setActiveKeys(activeKeys);
@@ -73,17 +87,7 @@ public class SceneDirectorService {
                 this.setMenuScene();
             }
             if (event.getCode() == KeyCode.ESCAPE) {
-                if (this.activeScene == gameScene) {
-                    this.gameStateService.haltGame();
-                    this.menuScene.buildMenu();
-                    this.setMenuScene();
-                } else if (this.activeScene == menuScene && this.gameStateService.gameIsActive()) {
-                    this.setGameScene();
-                    this.gameStateService.runGame();
-                } else {
-                    this.menuScene.buildMenu();
-                    this.setMenuScene();
-                }
+                handleEscapeKey();
             }
             this.activeKeys.put(event.getCode(), true);
             this.gameStateService.setActiveKeys(activeKeys);

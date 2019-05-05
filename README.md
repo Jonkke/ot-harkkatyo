@@ -54,3 +54,10 @@ To generate a checkstyle report in */target/site/checkstyle.html*, run the comma
 ```
 mvn jxr:jxr checkstyle:checkstyle
 ```
+
+### JavaDoc generation
+
+JavaDoc can be generated with the command
+```
+mvn javadoc:javadoc
+```

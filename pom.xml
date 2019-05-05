@@ -39,6 +39,7 @@
                 <configuration>
                     <excludes>
                         <exclude>scene/*</exclude>
+                        <exclude>util/CanvasUtils.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

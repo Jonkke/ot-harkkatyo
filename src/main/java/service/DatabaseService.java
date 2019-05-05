@@ -20,9 +20,9 @@ public class DatabaseService {
 
     Connection conn = null;
     
-    public void connect() {
+    public void connect(String dbName) {
         try {
-            String url = "jdbc:sqlite:gamedb.db";
+            String url = "jdbc:sqlite:" + dbName + ".db";
             this.conn = DriverManager.getConnection(url);
             System.out.println("Connection established.");
             createNonExistingTables(conn);

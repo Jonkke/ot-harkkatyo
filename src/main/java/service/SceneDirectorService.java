@@ -51,7 +51,7 @@ public class SceneDirectorService {
         this.height = 768;
 
         this.databaseService = new DatabaseService();
-        this.databaseService.connect();
+        this.databaseService.connect("gamedb");
         this.gameStateService = new GameStateService(width, height, this.databaseService);
         this.gameScene = new GameScene(this, this.gameStateService);
         this.gameStateService.setGameSceneRef(gameScene);

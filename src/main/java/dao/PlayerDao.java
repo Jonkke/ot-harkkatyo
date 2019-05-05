@@ -34,8 +34,10 @@ public class PlayerDao implements Dao<Player> {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Player p = new Player(rs.getInt("id"), rs.getString("name"));
+                rs.close();
                 return p;
             }
+            rs.close();
             return null;
         } catch (SQLException e) {
             System.out.println(e);
@@ -53,6 +55,7 @@ public class PlayerDao implements Dao<Player> {
                 Player p = new Player(rs.getInt("id"), rs.getString("name"));
                 players.add(p);
             }
+            rs.close();
             return players;
         } catch (SQLException e) {
             System.out.println(e);
@@ -65,7 +68,8 @@ public class PlayerDao implements Dao<Player> {
         try {
             PreparedStatement stmt = this.conn.prepareStatement("INSERT INTO Player (name) VALUES (?)");
             stmt.setString(1, p.getName());
-            stmt.execute();
+            stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -76,7 +80,8 @@ public class PlayerDao implements Dao<Player> {
         try {
             PreparedStatement stmt = this.conn.prepareStatement("DELETE FROM Player WHERE id = (?)");
             stmt.setInt(1, p.getId());
-            stmt.execute();
+            stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println(e);
         }

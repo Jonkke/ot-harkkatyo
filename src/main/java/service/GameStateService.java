@@ -279,5 +279,13 @@ public class GameStateService {
     public int getCanvasHeight() {
         return this.yBounds;
     }
+    
+    public int getBallCount() {
+        return this.ballCount;
+    }
+    
+    public long getNewBallCountDownTime() {
+        return this.newBallCountDownTime;
+    }
 
 }

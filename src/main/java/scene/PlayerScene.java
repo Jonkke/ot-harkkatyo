@@ -44,14 +44,14 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
     private VBox root;
     private ObservableList<String> playerNames;
 
-    public PlayerScene(SceneDirectorService sds, GameStateService gameStateService, DatabaseService dataBaseService) {
-        super(sds);
+    public PlayerScene(SceneDirectorService sceneDirectorService, GameStateService gameStateService, DatabaseService dataBaseService) {
+        super(sceneDirectorService);
         this.pd = new PlayerDao(dataBaseService);
         this.playerList = this.pd.getAll();
         this.gameStateService = gameStateService;
         this.gameStateService.setActivePlayer(this.playerList.get(0));
         this.root = new VBox(10);
-        this.root.setMinSize(sds.getSceneWidth(), sds.getSceneHeight());
+        this.root.setMinSize(sceneDirectorService.getSceneWidth(), sceneDirectorService.getSceneHeight());
         this.root.setAlignment(Pos.CENTER);
         addPlayerMenuItems(this.root);
     }

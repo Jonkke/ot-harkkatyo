@@ -47,3 +47,10 @@ The generated .jar can be run from the "target" directory with
 ```
 java -jar OMBC-1.0-SNAPSHOT.jar
 ```
+
+### Checkstyle report generation
+
+To generate a checkstyle report in */target/site/checkstyle.html*, run the command
+```
+mvn jxr:jxr checkstyle:checkstyle
+```

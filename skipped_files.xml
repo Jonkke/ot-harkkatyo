@@ -7,6 +7,5 @@
 <!--Add files to the list below that you want to skip during checkstyle report generation!-->
 
 <suppressions>
-<!--    <suppress files="todoapp.ui.TodoUi.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="todoapp.ui.GuiHelper.java" checks="[a-zA-Z0-9]*"/>-->
+    <suppress files="scene.*" checks="[a-zA-Z0-9]*" />
 </suppressions>

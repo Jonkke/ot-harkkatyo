@@ -46,7 +46,7 @@ public class SceneDirectorService {
     private HighscoreScene highscoreScene;
 
     public SceneDirectorService() {
-        // TODO: make the game scalable to other resolutions
+        // NOTE: Do not change, this is currently the only supported resolution!
         this.width = 1024;
         this.height = 768;
 

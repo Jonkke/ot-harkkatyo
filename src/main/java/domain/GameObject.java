@@ -74,6 +74,9 @@ public abstract class GameObject {
         this.setVelocityY(this.velocity * yVelocityFactor);
     }
 
+    /**
+     * Updates the heading, based on current X and Y velocities
+     */
     protected void updateHeadingAngle() {
         this.headingAngleDegrees = Math.atan2(-this.velocityY, this.velocityX) * (180 / Math.PI);
     }
@@ -128,6 +131,11 @@ public abstract class GameObject {
         this.velocityY += accY;
     }
 
+    /**
+     * This method marks this game object for destuction. Objects marked for
+     * destruction will be disposed of by the game loop during the next update
+     * cycle.
+     */
     public void markForDestruction() {
         this.destroyed = true;
     }

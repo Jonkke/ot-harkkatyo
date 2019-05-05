@@ -8,16 +8,17 @@ package dao;
 import java.util.List;
 
 /**
+ * This is DAO interface for all other Dao classes to use.
  *
- * @author jonask
+ * @author Jonkke
  */
 public interface Dao<T> {
 
     public T get(int id);
-    
+
     public List<T> getAll();
-    
+
     public void save(T t);
-    
+
     public void delete(T t);
 }

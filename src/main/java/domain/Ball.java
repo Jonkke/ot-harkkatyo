@@ -12,6 +12,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 /**
+ * This class represnts a Ball object in the game. The ball is one of the most
+ * important objects in the game, as pretty much all the gameplay is centered
+ * around it.
  *
  * @author Jonkke
  */

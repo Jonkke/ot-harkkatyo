@@ -16,6 +16,7 @@ import java.util.List;
 import service.DatabaseService;
 
 /**
+ * This is the DAO class for the Score model.
  *
  * @author Jonkke
  */
@@ -27,6 +28,12 @@ public class ScoreDao implements Dao<Score> {
         this.conn = dbs.getConnection();
     }
 
+    /**
+     * Find and return a single score object in the database
+     *
+     * @param id the id of the score to be fetched
+     * @return the score object that matches the id given as parameter
+     */
     @Override
     public Score get(int id) {
         try {
@@ -48,6 +55,9 @@ public class ScoreDao implements Dao<Score> {
         }
     }
 
+    /**
+     * @return All scores in the database as a List object
+     */
     @Override
     public List<Score> getAll() {
         List<Score> allScores = new ArrayList();
@@ -67,6 +77,11 @@ public class ScoreDao implements Dao<Score> {
         }
     }
 
+    /**
+     * Save a score object to the database
+     *
+     * @param s score object to be saved
+     */
     @Override
     public void save(Score s) {
         try {
@@ -82,6 +97,11 @@ public class ScoreDao implements Dao<Score> {
         }
     }
 
+    /**
+     * Delete a score object from the database
+     *
+     * @param s score object to be deleted
+     */
     @Override
     public void delete(Score s) {
         try {
@@ -94,6 +114,13 @@ public class ScoreDao implements Dao<Score> {
         }
     }
 
+    /**
+     * Helper method for creating a score object from a ResultSet object
+     *
+     * @param rs ResultSet holding score infomration
+     * @return new Score object
+     * @throws SQLException
+     */
     private Score createScore(ResultSet rs) throws SQLException {
         int scoreId = rs.getInt("id");
         int points = rs.getInt("points");

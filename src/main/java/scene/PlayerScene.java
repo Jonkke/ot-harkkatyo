@@ -35,7 +35,7 @@ import service.SceneDirectorService;
  *
  * @author Jonkke
  */
-public class PlayerScene extends BaseScene {  // TODO: This whole thing could use some serious cleanup...
+public class PlayerScene extends BaseScene {
 
     PlayerDao pd;
     List<Player> playerList;

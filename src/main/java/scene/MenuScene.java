@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import service.GameStateService;
 import service.SceneDirectorService;
-import util.Utils;
 
 /**
  * This class represents the main menu scene. This is the first scene shown to
@@ -69,13 +68,13 @@ public class MenuScene extends BaseScene {
         highscoreMenuBtn.setOnAction(event -> {
             this.sceneDirectorService.setHighscoreMenuScene();
         });
-        
+
         Button exitGameBtn = new Button();
         exitGameBtn.setText("Exit");
         exitGameBtn.setOnAction(event -> {
             sceneDirectorService.exitGame();
         });
-        
+
         root.getChildren().add(selectedPlayerLabel);
         if (this.gameStateService.gameIsActive()) {
             root.getChildren().add(continueGameBtn);

@@ -6,8 +6,8 @@
 package domain;
 
 /**
- *  This class represents a player.
- * 
+ * This class represents a player.
+ *
  * @author Jonkke
  */
 public class Player {

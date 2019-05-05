@@ -87,7 +87,7 @@ public class GameScene extends BaseScene {
     /**
      * Calling this method will start the game loop contained within this scene.
      * Will also reset the time from last time to current system time, to
-     * prevens skipping.
+     * prevent skipping.
      */
     public void start() {
         this.timeLastFrame = System.nanoTime();

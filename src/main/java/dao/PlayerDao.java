@@ -15,6 +15,7 @@ import java.util.List;
 import service.DatabaseService;
 
 /**
+ * This is the DAO class for the Player model.
  *
  * @author Jonkke
  */
@@ -26,6 +27,12 @@ public class PlayerDao implements Dao<Player> {
         this.conn = dbs.getConnection();
     }
 
+    /**
+     * Find and return a single Player object in the database
+     *
+     * @param id id of the player to be fetched
+     * @return the player object that matches the id given as parameter
+     */
     @Override
     public Player get(int id) {
         try {
@@ -47,6 +54,9 @@ public class PlayerDao implements Dao<Player> {
         }
     }
 
+    /**
+     * @return All players in the database as a List object
+     */
     @Override
     public List<Player> getAll() {
         List<Player> players = new ArrayList();
@@ -66,6 +76,11 @@ public class PlayerDao implements Dao<Player> {
         }
     }
 
+    /**
+     * Save a player object to the database
+     *
+     * @param p Player object to be saved
+     */
     @Override
     public void save(Player p) {
         try {
@@ -78,6 +93,11 @@ public class PlayerDao implements Dao<Player> {
         }
     }
 
+    /**
+     * Delete a player object from the database
+     *
+     * @param p Player object to be deleted
+     */
     @Override
     public void delete(Player p) {
         try {

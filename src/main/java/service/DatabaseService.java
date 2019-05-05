@@ -12,14 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This service provides the connection to the underlying SQLite database.
+ * This service provides the connection to the underlying SQLite database. As
+ * this application uses a SQLite database, only a single active connection will
+ * be used for everything.
  *
  * @author Jonkke
  */
 public class DatabaseService {
 
     Connection conn = null;
-    
+
     public void connect(String dbName) {
         try {
             String url = "jdbc:sqlite:" + dbName + ".db";
@@ -31,7 +33,7 @@ public class DatabaseService {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public Connection getConnection() {
         return this.conn;
     }
@@ -50,7 +52,7 @@ public class DatabaseService {
                 + "FOREIGN KEY(playerId) REFERENCES Player(id))");
         stmt.execute();
     }
-    
+
     private void createDefaultPlayerIfPlayersEmpty(Connection conn) throws SQLException {
         PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM Player");
         ResultSet rs = stmt.executeQuery();

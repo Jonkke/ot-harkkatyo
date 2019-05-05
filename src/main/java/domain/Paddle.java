@@ -15,6 +15,9 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
 /**
+ * This class represents the Paddle game object. Paddle is used to bounce the
+ * ball in the game, and player is in direct control of it. The paddle is
+ * controlled with the mouse.
  *
  * @author Jonkke
  */
@@ -48,11 +51,6 @@ public class Paddle extends GameObject {
         }
         if (this.x > xBounds - this.width / 2) {
             this.x = xBounds - this.width / 2;
-        }
-        if (activeKeys.getOrDefault(KeyCode.LEFT, false)) {
-            this.x -= this.moveSpeed;
-        } else if (activeKeys.getOrDefault(KeyCode.RIGHT, false)) {
-            this.x += this.moveSpeed;
         }
     }
 

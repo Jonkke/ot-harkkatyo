@@ -8,14 +8,15 @@ package domain;
 import java.util.Date;
 
 /**
- * This class represents a single score attained from a game. Included information
- * includes the amount of points scored, date of score, time played
- * to attain the score (in milliseconds) and the player, referenced by id, who is
- * credited for this particular score.
- * 
+ * This class represents a single score attained from a game. Included
+ * information includes the amount of points scored, date of score, time played
+ * to attain the score (in milliseconds) and the player, referenced by id, who
+ * is credited for this particular score.
+ *
  * @author Jonkke
  */
 public class Score {
+
     private int id;
     private int points;
     private Date scoreDate;
@@ -61,7 +62,7 @@ public class Score {
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
-    
+
     public Score(int id, int points, Date scoreDate, long scoreTime, int playerId) {
         this.id = id;
         this.points = points;
@@ -69,5 +70,5 @@ public class Score {
         this.scoreTime = scoreTime;
         this.playerId = playerId;
     }
-    
+
 }

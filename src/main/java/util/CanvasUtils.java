@@ -51,7 +51,7 @@ public class CanvasUtils {
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setTextBaseline(VPos.BASELINE);
         gc.fillText("Player: " + activePlayer.getName(), 10, 25);
-        gc.fillText("Balls left: " + (ballCount-1), 10, 40);
+        gc.fillText("Balls left: " + ballCount, 10, 40);
         gc.fillText("Score: " + points, 10, 55);
         gc.fillText("time: " + Utils.getFormattedTime(runTime), 10, 70);
     }

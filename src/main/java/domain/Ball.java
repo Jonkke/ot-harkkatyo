@@ -60,6 +60,7 @@ public class Ball extends GameObject {
 
         this.x += this.velocityX;
         this.y += this.velocityY;
+        this.updateHeadingAngle();
 
         enforceBallInsideGameArea(xBounds, yBounds);
 

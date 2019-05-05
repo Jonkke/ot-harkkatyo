@@ -90,6 +90,7 @@ public class GameStateService {
      * This method initializes a new game.
      */
     public void initNewGame() {
+        this.ball = null;
         this.paddle = new Paddle(xBounds / 2, yBounds - 15, 150, 10);
         this.gameObjectList = new ArrayList();
         this.gameObjectList.add(paddle);
@@ -104,6 +105,7 @@ public class GameStateService {
         this.phases = new boolean[]{false, false, false, false};
         this.gameActive = true;
         this.gameEnded = false;
+        this.runTime = 0;
     }
 
     /**

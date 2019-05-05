@@ -67,12 +67,15 @@ public abstract class GameObject {
      * @param velocity new velocity value for this object
      */
     public void setVelocity(double velocity) {
-        // TODO: Update headingAngleDegrees before setting velocity (currently changes direction)
         this.velocity = velocity;
         double xVelocityFactor = Math.cos(this.headingAngleDegrees * Math.PI / 180);
         double yVelocityFactor = -Math.sin(this.headingAngleDegrees * Math.PI / 180);  // negative, as the Y axis grows towards the bottom
         this.setVelocityX(this.velocity * xVelocityFactor);
         this.setVelocityY(this.velocity * yVelocityFactor);
+    }
+
+    protected void updateHeadingAngle() {
+        this.headingAngleDegrees = Math.atan2(-this.velocityY, this.velocityX) * (180 / Math.PI);
     }
 
     /**

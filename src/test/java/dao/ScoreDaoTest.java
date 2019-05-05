@@ -5,7 +5,7 @@
  */
 package dao;
 
-import domain.Player;
+import domain.Score;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,46 +19,36 @@ import service.DatabaseService;
  *
  * @author jonask
  */
-public class PlayerDaoTest {
-    
+public class ScoreDaoTest {
+
     DatabaseService dbs;
-    PlayerDao pd;
-    
-    public PlayerDaoTest() {
+    ScoreDao sd;
+
+    public ScoreDaoTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         this.dbs = new DatabaseService();
         this.dbs.connect("testdb");
-        this.pd = new PlayerDao(this.dbs);
+        this.sd = new ScoreDao(this.dbs);
     }
-    
+
     @After
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
      @Test
-     public void newDatabaseHasOnlyDefaulPlayer() {
-         List<Player> players = this.pd.getAll();
-         assertEquals(1, players.size());
-         assertEquals("default", players.get(0).getName());
-     }
-     
-     @Test
-     public void fetchingPlayerWithIdFromDBWorks() {
-         Player p = this.pd.get(1);
-         assertEquals("default", p.getName());
+     public void newDatabaseHasNoScores() {
+         List<Score> scores = this.sd.getAll();
+         assertEquals(0, scores.size());
      }
 }

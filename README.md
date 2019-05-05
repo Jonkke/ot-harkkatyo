@@ -15,9 +15,9 @@ This project uses Java 8 and Maven 3.5.2.
 [Testing document](https://github.com/Jonkke/ot-harkkatyo/blob/master/documentation/testing.md)
 
 ## Releases
-
-[Week 5](https://github.com/Jonkke/ot-harkkatyo/releases/tag/week5)  
+[Final](https://github.com/Jonkke/ot-harkkatyo/releases/tag/Final)
 [Week 6](https://github.com/Jonkke/ot-harkkatyo/releases/tag/week6)
+[Week 5](https://github.com/Jonkke/ot-harkkatyo/releases/tag/week5)  
 
 ## Running & Testing
 

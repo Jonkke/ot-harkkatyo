@@ -155,7 +155,7 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
      * Shows a confirmation dialog asking whether or not the current game should
      * end, which needs to happen when changing player mid-game.
      *
-     * @return
+     * @return boolean value representing confirmed or declined confirmation
      */
     private boolean getEndGameConfirmation() {
         Alert a = new Alert(AlertType.CONFIRMATION);

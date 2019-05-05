@@ -25,10 +25,10 @@ public class CanvasUtils {
 
     /**
      * Fills the canvas with the chosen color
-     * 
+     *
      * @param gc
      * @param width
-     * @param height 
+     * @param height
      */
     public static void fillCanvas(GraphicsContext gc, Color color, int width, int height) {
         gc.clearRect(0, 0, width, height);
@@ -51,7 +51,7 @@ public class CanvasUtils {
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setTextBaseline(VPos.BASELINE);
         gc.fillText("Player: " + activePlayer.getName(), 10, 25);
-        gc.fillText("Balls left: " + ballCount, 10, 40);
+        gc.fillText("Balls left: " + (ballCount-1), 10, 40);
         gc.fillText("Score: " + points, 10, 55);
         gc.fillText("time: " + Utils.getFormattedTime(runTime), 10, 70);
     }
@@ -86,6 +86,16 @@ public class CanvasUtils {
 
         gc.setFont(new Font("monospace", 16));
         gc.fillText("Press any key to continue", width / 2, (boxY1 + boxY2) / 2 + 164);
+    }
+
+    public static void drawBallCountDownTimer(GraphicsContext gc, int width, int height, long ballCountDown) {
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFont(new Font("monospace", 40));
+        gc.setFill(Color.WHITE);
+        gc.fillText("New ball spawning in", width / 2, height / 3);
+
+        gc.fillText("" + (Math.floorDiv(ballCountDown, 1000) + 1), width / 2, height / 3 + 40);
     }
 
 }

@@ -56,7 +56,7 @@ public class GameScene extends BaseScene {
             GraphicsContext gc = canvas.getGraphicsContext2D();
 
             while (accumulatedTime >= fixedDTns) {
-                gameStateService.update();
+                gameStateService.update(fixedDTns / 1000000);
                 accumulatedTime -= fixedDTns;
             }
             gameStateService.draw(gc);

@@ -65,6 +65,7 @@ public class GameStateService {
     private long startTime;
     private long runTime;
     private boolean[] phases;
+    private long newBallCountDownTime;
 
     // Active keys & mouse position vector
     Map<KeyCode, Boolean> activeKeys;
@@ -93,19 +94,14 @@ public class GameStateService {
      * This method initializes a new game.
      */
     public void initNewGame() {
-        this.ball = new Ball(500, 300, 7);
         this.paddle = new Paddle(xBounds / 2, yBounds - 15, 150, 10);
         this.gameObjectList = new ArrayList();
-        this.gameObjectList.add(ball);
         this.gameObjectList.add(paddle);
 
         this.ballCount = 3;
         this.points = 0;
         this.ballSpeed = 2.2;
-
-        this.ball.disableBottomCollision();
-        this.ball.setHeading(270);
-        this.ball.setVelocity(ballSpeed);
+        this.newBallCountDownTime = 3000;
 
         this.gameObjectList.addAll(Utils.build16by8BrickArray(this.xBounds, this.yBounds, 2));
 
@@ -179,21 +175,47 @@ public class GameStateService {
     }
 
     /**
-     * If ball was destroyed, spawn new and reduce ballcount TODO: Add a
-     * cooldown time before a new ball is spawned
+     * If a ball was destroyed, set new ball countdown timer and reduce amount
+     * of balls available for play
      */
     private void handleLostBall() {
         if (this.ball.markedForDestruction()) {
-            this.ball = new Ball(500, 300, 7);
-            this.ball.disableBottomCollision();
-            this.ball.setHeading(270);
-            this.ball.setVelocity(ballSpeed);
-            this.gameObjectList.add(this.ball);
             this.ballCount--;
+            this.ball = null;
+            this.newBallCountDownTime = 3000;
         }
     }
 
-    public void update() {
+    /**
+     * Spawns a new ball
+     */
+    private void spawnNewBall() {
+        this.ball = new Ball(500, 300, 7);
+        this.ball.disableBottomCollision();
+        this.ball.setHeading(270);
+        this.ball.setVelocity(ballSpeed);
+        this.gameObjectList.add(this.ball);
+    }
+
+    /**
+     * Checks whether or not the conditions for ending the game exist or not
+     */
+    private void handleEndGameCheck() {
+        if (this.gameObjectList.size() == 2 || this.ballCount <= 0) {
+            endGame(false);
+        }
+    }
+
+    public void update(long deltaTimeMS) {
+        this.runTime += deltaTimeMS;
+        if (this.newBallCountDownTime > 0) {
+            this.paddle.update(this.xBounds, this.yBounds, gameObjectList, this.activeKeys, this.mouseVector);
+            this.newBallCountDownTime -= deltaTimeMS;
+            return;
+        }
+        if (this.ball == null && this.ballCount > 0) {
+            spawnNewBall();
+        }
         for (GameObject obj : gameObjectList) {
             obj.update(this.xBounds, this.yBounds, gameObjectList, this.activeKeys, this.mouseVector);
         }
@@ -202,13 +224,10 @@ public class GameStateService {
                 this.points += ((Brick) ob).getValue();
             }
         });
-        this.runTime = System.currentTimeMillis() - this.startTime;
         this.gameObjectList = this.gameObjectList.stream().filter(obj -> !obj.markedForDestruction()).collect(Collectors.toList());
         handleLostBall();
         handlePhases();
-        if (this.gameObjectList.size() == 2 || this.ballCount <= 0) {
-            endGame(false);
-        }
+        handleEndGameCheck();
         this.activeKeys = new HashMap(); // Reset keys after each update loop, since we may update several times during one frame
     }
 
@@ -218,6 +237,10 @@ public class GameStateService {
             obj.draw(gc);
         }
         CanvasUtils.drawGameSceneInfo(gc, this.activePlayer, this.ballCount, this.points, this.runTime);
+
+        if (this.newBallCountDownTime > 0 && this.ballCount > 0) {
+            CanvasUtils.drawBallCountDownTimer(gc, this.xBounds, this.yBounds, this.newBallCountDownTime);
+        }
 
         if (this.gameEnded) {
             CanvasUtils.drawEndGamePopUp(gc, this.xBounds, this.yBounds, this.points, this.runTime);

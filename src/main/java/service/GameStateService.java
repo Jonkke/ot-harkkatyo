@@ -31,9 +31,6 @@ import util.Utils;
  * and render() methods for handling updates and renders for all game objects
  * during a single update or render cycle.
  *
- * This class also implements the EventHandler interface, so that KeyEvents and
- * MouseEvents can easily update the current game state.
- *
  * @author Jonkke
  */
 public class GameStateService {
@@ -62,7 +59,6 @@ public class GameStateService {
     private int ballCount;
     private int points;
     private double ballSpeed;
-    private long startTime;
     private long runTime;
     private boolean[] phases;
     private long newBallCountDownTime;
@@ -108,7 +104,6 @@ public class GameStateService {
         this.phases = new boolean[]{false, false, false, false};
         this.gameActive = true;
         this.gameEnded = false;
-        this.startTime = System.currentTimeMillis();
     }
 
     /**
@@ -206,6 +201,15 @@ public class GameStateService {
         }
     }
 
+    /**
+     * Updates all game logic during a single update cycle iteration. This
+     * includes variables pertaining to the current game session, such as
+     * elapsed time, ball count, points, and also calling the update() methods
+     * of every individual game object contained within the gameObjectList
+     * variable of this class instance.
+     *
+     * @param deltaTimeMS time in milliseconds elapsed since the last update
+     */
     public void update(long deltaTimeMS) {
         this.runTime += deltaTimeMS;
         if (this.newBallCountDownTime > 0) {
@@ -231,6 +235,13 @@ public class GameStateService {
         this.activeKeys = new HashMap(); // Reset keys after each update loop, since we may update several times during one frame
     }
 
+    /**
+     * Handles the drawing of all the game objects, and also all the game UI
+     * information (game stats, ball countdown timers, end game popups) on the
+     * designated GraphicsContext
+     *
+     * @param gc GraphicsContext we're drawing to
+     */
     public void draw(GraphicsContext gc) {
         CanvasUtils.fillCanvas(gc, Color.BLACK, this.xBounds, this.yBounds);
         for (GameObject obj : gameObjectList) {

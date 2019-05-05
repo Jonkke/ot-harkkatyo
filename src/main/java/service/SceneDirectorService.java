@@ -20,7 +20,6 @@ import scene.BaseScene;
 import scene.HighscoreScene;
 import scene.MenuScene;
 import scene.PlayerScene;
-import scene.SettingsScene;
 
 /**
  * This service is responsible for switching between the various scenes in the
@@ -45,7 +44,6 @@ public class SceneDirectorService {
     private MenuScene menuScene;
     private PlayerScene playerScene;
     private HighscoreScene highscoreScene;
-    private SettingsScene settingsScene;
 
     public SceneDirectorService() {
         // TODO: make the game scalable to other resolutions
@@ -60,7 +58,6 @@ public class SceneDirectorService {
         this.playerScene = new PlayerScene(this, this.gameStateService, this.databaseService);
         this.menuScene = new MenuScene(this, this.gameStateService);
         this.highscoreScene = new HighscoreScene(this, this.databaseService);
-        this.settingsScene = new SettingsScene(this, this.gameStateService);
         this.scene = new Scene(this.gameScene.getRoot());
 
         addKeyHandler();
@@ -146,14 +143,6 @@ public class SceneDirectorService {
     }
 
     /**
-     * Changes current scene to the settings menu scene.
-     */
-    public void setSettingsMenuScene() {
-        this.scene.setRoot(this.settingsScene.getRoot());
-        this.activeScene = this.settingsScene;
-    }
-
-    /**
      * @return the Scene object of this SceneDirectorService instance
      */
     public Scene getScene() {
@@ -181,7 +170,7 @@ public class SceneDirectorService {
     public int getSceneHeight() {
         return this.height;
     }
-    
+
     /**
      * @return mouse position vector
      */

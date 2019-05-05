@@ -55,9 +55,9 @@ public class GameScene extends BaseScene {
             accumulatedTime += timeLast;
             timeLastFrame = timeNow;
             GraphicsContext gc = canvas.getGraphicsContext2D();
-            
+
             Utils.lockMouseInsideGameArea(root.getScene());
-            
+
             while (accumulatedTime >= fixedDTns) {
                 gameStateService.update(fixedDTns / 1000000);
                 accumulatedTime -= fixedDTns;

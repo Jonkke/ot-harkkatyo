@@ -48,7 +48,7 @@ public class SceneDirectorService {
     private SettingsScene settingsScene;
 
     public SceneDirectorService() {
-        // TODO: make game scalable to other resolutions
+        // TODO: make the game scalable to other resolutions
         this.width = 1024;
         this.height = 768;
 
@@ -57,8 +57,8 @@ public class SceneDirectorService {
         this.gameStateService = new GameStateService(width, height, this.databaseService);
         this.gameScene = new GameScene(this, this.gameStateService);
         this.gameStateService.setGameSceneRef(gameScene);
-        this.menuScene = new MenuScene(this, this.gameStateService);
         this.playerScene = new PlayerScene(this, this.gameStateService, this.databaseService);
+        this.menuScene = new MenuScene(this, this.gameStateService);
         this.highscoreScene = new HighscoreScene(this, this.databaseService);
         this.settingsScene = new SettingsScene(this, this.gameStateService);
         this.scene = new Scene(this.gameScene.getRoot());
@@ -110,6 +110,7 @@ public class SceneDirectorService {
      * will start the game.
      */
     public void setGameScene() {
+        // TODO: Lock mouse inside window while game scene is running
         this.scene.setRoot(this.gameScene.getRoot());
         this.scene.setCursor(Cursor.NONE);
         this.activeScene = gameScene;

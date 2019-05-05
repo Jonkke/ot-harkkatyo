@@ -8,6 +8,7 @@ package scene;
 import dao.PlayerDao;
 import domain.Player;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -45,6 +49,7 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         this.pd = new PlayerDao(dataBaseService);
         this.playerList = this.pd.getAll();
         this.gameStateService = gameStateService;
+        this.gameStateService.setActivePlayer(this.playerList.get(0));
         this.root = new VBox(10);
         this.root.setMinSize(sds.getSceneWidth(), sds.getSceneHeight());
         this.root.setAlignment(Pos.CENTER);
@@ -101,7 +106,9 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
                 return;
             }
             if (this.gameStateService.gameIsActive()) {
-                // TODO: add confirm dialog here
+                if (!getEndGameConfirmation()) {
+                    return;
+                }
                 this.gameStateService.endGame(true);
             }
             this.gameStateService.setActivePlayer(this.playerList.get(selectedIndex));
@@ -142,6 +149,22 @@ public class PlayerScene extends BaseScene {  // TODO: This whole thing could us
         root.getChildren().add(namesList);
         root.getChildren().add(lowerBtnPane);
         root.getChildren().add(backBtn);
+    }
+
+    /**
+     * Shows a confirmation dialog asking whether or not the current game should
+     * end, which needs to happen when changing player mid-game.
+     *
+     * @return
+     */
+    private boolean getEndGameConfirmation() {
+        Alert a = new Alert(AlertType.CONFIRMATION);
+        a.setTitle("End game confirmation");
+        a.setHeaderText("End current game?");
+        a.setContentText("Changing player will end the currently running game. Are you sure you want switch to another player?");
+
+        Optional<ButtonType> res = a.showAndWait();
+        return res.get() == ButtonType.OK;
     }
 
     @Override

@@ -72,7 +72,6 @@ public class GameStateService {
 
     public GameStateService(int width, int height, DatabaseService databaseService) {
         this.databaseService = databaseService;
-        this.activePlayer = new Player(1, "default");
         this.xBounds = width;
         this.yBounds = height;
         this.gameActive = false;
@@ -180,7 +179,8 @@ public class GameStateService {
     }
 
     /**
-     * If ball was destroyed, spawn new and reduce ballcount
+     * If ball was destroyed, spawn new and reduce ballcount TODO: Add a
+     * cooldown time before a new ball is spawned
      */
     private void handleLostBall() {
         if (this.ball.markedForDestruction()) {

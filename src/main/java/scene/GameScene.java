@@ -61,7 +61,7 @@ public class GameScene extends BaseScene {
             }
             gameStateService.draw(gc);
 
-            // Sort of dirty hack to cap FPS to 60. JavaFX's AnimationTimer *should* cap it automatically,
+            // Sort of dirty hack to cap FPS to the value denoted by fpsCap variable. JavaFX's AnimationTimer *should* cap it automatically,
             // but it seems that on some systems (Ubuntu that I'm running for instance) the throttling does
             // not work, so I have done it manually here.
             while ((frameDuration / 1000000) < (1.0 / fpsCap) * 1000) {

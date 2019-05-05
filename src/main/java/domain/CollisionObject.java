@@ -46,10 +46,10 @@ public class CollisionObject {
      * @return boolean value
      */
     public boolean checkCollision(CollisionObject cobj) {
-        if (this.type == "circle" && cobj.type == "circle") {
+        if ("circle".equals(this.type) && "circle".equals(cobj.type)) {
             return Math.sqrt(Math.pow(cobj.getHostX() - this.getHostX(), 2) + Math.pow(cobj.getHostY() - this.getHostY(), 2)) < this.radius + cobj.radius;
         }
-        if (this.type == "circle" && cobj.type == "rectangle") {
+        if ("circle".equals(this.type) && "rectangle".equals(cobj.type)) {
             return this.getHostX() + this.radius >= cobj.getHostX() - cobj.width / 2
                     && this.getHostX() - this.radius <= cobj.getHostX() + cobj.width / 2
                     && this.getHostY() + this.radius >= cobj.getHostY() - cobj.height / 2
@@ -73,7 +73,7 @@ public class CollisionObject {
         double thisTopY;
         double thisBottomY;
 
-        if (this.type == "circle") {
+        if ("circle".equals(this.type)) {
             thisLeftX = this.getHostX();
             thisRightX = this.getHostX();
             thisTopY = this.getHostY();

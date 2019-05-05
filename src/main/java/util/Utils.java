@@ -108,7 +108,6 @@ public class Utils {
                     r.mouseMove(mouseX, bottomY);
                 }
             } catch (AWTException awte) {
-                awte.printStackTrace();
             }
         });
     }

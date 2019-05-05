@@ -35,9 +35,11 @@ public class PlayerDao implements Dao<Player> {
             if (rs.next()) {
                 Player p = new Player(rs.getInt("id"), rs.getString("name"));
                 rs.close();
+                stmt.close();
                 return p;
             }
             rs.close();
+            stmt.close();
             return null;
         } catch (SQLException e) {
             System.out.println(e);
@@ -56,6 +58,7 @@ public class PlayerDao implements Dao<Player> {
                 players.add(p);
             }
             rs.close();
+            stmt.close();
             return players;
         } catch (SQLException e) {
             System.out.println(e);

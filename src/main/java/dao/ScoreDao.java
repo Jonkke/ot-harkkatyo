@@ -34,8 +34,13 @@ public class ScoreDao implements Dao<Score> {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return createScore(rs);
+                Score score = createScore(rs);
+                rs.close();
+                stmt.close();
+                return score;
             }
+            rs.close();
+            stmt.close();
             return null;
         } catch (SQLException e) {
             System.out.println(e);
@@ -50,8 +55,11 @@ public class ScoreDao implements Dao<Score> {
             PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM Score");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                allScores.add(createScore(rs));
+                Score score = createScore(rs);
+                allScores.add(score);
             }
+            rs.close();
+            stmt.close();
             return allScores;
         } catch (SQLException e) {
             System.out.println(e);
@@ -68,6 +76,7 @@ public class ScoreDao implements Dao<Score> {
             stmt.setLong(3, s.getScoreTime());
             stmt.setInt(4, s.getPlayerId());
             stmt.execute();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -79,6 +88,7 @@ public class ScoreDao implements Dao<Score> {
             PreparedStatement stmt = this.conn.prepareStatement("DELETE FROM Score WHERE id = (?)");
             stmt.setInt(1, s.getId());
             stmt.execute();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println(e);
         }

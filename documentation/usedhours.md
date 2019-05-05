@@ -13,4 +13,5 @@
 |24.4| 8 | Began implementing database, Dao classes and player & score scenes, among other things |
 |26.4| 5 | Lots of refactoring, add (working) support for scoreboard, tweaks here and there, documentation and minor test improvements |
 |28.4| 5 | More refactoring, implemented scoreboard, improved gameplay, graphical improvements, usability improvements |
-| Total | 56   | |
+|5.5| 8 | Refactor, clean up, document, finalize stuff |
+| Total | 64   | |
